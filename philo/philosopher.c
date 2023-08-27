@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 02:17:28 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 02:29:52 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -36,14 +36,17 @@ void	*philosopher(void *arg)
 	now_time(&now);
 	printf("%ld %d has taken a fork\n", now, p->id);
 	now_time(&now);
+	printf("%ld %d has taken a fork\n", now, p->id);
+	now_time(&now);
 	printf("%ld %d is eating\n", now, p->id);
+	usleep(p->data->t_eat * 1000);
 	now_time(&now);
 	printf("%ld %d is sleeping\n", now, p->id);
+	usleep(p->data->t_sleep * 1000);
 	now_time(&now);
 	printf("%ld %d is thinking\n", now, p->id);
 	now_time(&now);
 	printf("%ld %d died\n", now, p->id);
-
 	return (NULL);
 }
 
