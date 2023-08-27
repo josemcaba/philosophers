@@ -1,1 +1,3 @@
 philo/a.out
+philo/*.o
+philo/philo
