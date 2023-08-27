@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 00:52:00 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:48:14 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -37,6 +37,7 @@ int	data_load(t_data *data, int argc, char *argv[])
 	data->t_eat = ft_atoi(argv[3]);
 	data->t_sleep = ft_atoi(argv[4]);
 	data->n_meals = -1;
+	data->one_death = 0;
 	if (argc == 6)
 		data->n_meals = ft_atoi(argv[5]);
 	data->forks = malloc(data->n_philos * sizeof(char));

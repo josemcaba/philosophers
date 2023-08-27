@@ -6,13 +6,11 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:23:19 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 02:10:32 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:39:40 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "philo.h"
-
-
 
 /*
 Despues de pthread_create hay que asegurarse de liberar los recursos usados
@@ -28,6 +26,7 @@ int	main(int argc, char *argv[])
 {
 	t_data		data;
 	t_philo		*philo;
+	long		now;
 
 	if (args_parse(argc, argv))
 		return (EXIT_FAILURE);
@@ -36,7 +35,11 @@ int	main(int argc, char *argv[])
 	if (philos_create(&data, &philo))
 		return (EXIT_FAILURE);
 	philos_detach(&philo);
-	usleep(1000000);
+	usleep(10000000);
+	data.one_death = 2;
+	now_time(&now);
+	printf("%ld %d died\n", now, philo->data->one_death);
+	usleep(500000);
 	free (data.forks);
 	free (philo);
 	return (EXIT_SUCCESS);

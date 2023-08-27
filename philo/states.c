@@ -6,23 +6,56 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 09:56:04 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:55:16 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
-#include <philo.h>
+#include "philo.h"
 
-// Está pensando mientras intenta conseguir un tenedor
-void	think (t_philo	*philo)
+// Está pensando mientras intenta conseguir los tenedores
+void	thinking (t_philo *philo)
 {
+	long now;
+	
+	if (philo->data->one_death)
+		return ;
+	now_time(&now);
+	printf("%ld %d is thinking\n", now, philo->id);
 	while (!philo->left && !philo->right)
 	{
-		philo->left = 1;
-		philo->right = 1;
+		if (philo->data->one_death)
+			return ;
+		*philo->left = 1;
+		*philo->right = 1;
 	}
+	printf("%ld %d has taken a fork\n", now, philo->id);
 }
 
-void	eat (t_philo *philo)
+void	eating (t_philo *philo)
 {
-	philo
+	long now;
+	
+	if (philo->data->one_death)
+		return ;
+	now_time(&now);	
+	philo->dead_time = now + philo->data->t_die;
+	printf("%ld %d is eating\n", now, philo->id);
+	while (delta_time(now) < philo->data->t_eat)
+		if (philo->data->one_death)
+			return ;
+	*philo->left = 0;
+	*philo->right = 0;
+}
+
+void	sleeping (t_philo *philo)
+{
+	long now;
+	
+	if (philo->data->one_death)
+		return ;
+	now_time(&now);
+	printf("%ld %d is sleeping\n", now, philo->id);
+	while (delta_time(now) < philo->data->t_sleep)
+		if (philo->data->one_death)
+			return ;
 }
