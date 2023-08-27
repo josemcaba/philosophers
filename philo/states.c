@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 11:55:16 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:52:51 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -38,11 +38,15 @@ void	eating (t_philo *philo)
 	if (philo->data->one_death)
 		return ;
 	now_time(&now);	
-	philo->dead_time = now + philo->data->t_die;
+	philo->data->black_holes[philo->id - 1] = now + philo->data->t_die;
 	printf("%ld %d is eating\n", now, philo->id);
 	while (delta_time(now) < philo->data->t_eat)
 		if (philo->data->one_death)
 			return ;
+	if (philo->data->n_meals >= 0)
+	{
+		philo->meals++;
+	}
 	*philo->left = 0;
 	*philo->right = 0;
 }

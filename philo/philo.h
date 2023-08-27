@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 11:09:04 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 13:42:47 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -22,20 +22,19 @@
 
 typedef struct s_data
 {
-	int			n_philos;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			n_meals;
-	char		*forks;
-	int			one_death;
-	int			error;
+	int		n_philos;
+	int		t_die;
+	int		t_eat;
+	int		t_sleep;
+	int		n_meals;
+	char	*forks;
+	int		one_death;
+	long	*black_holes;
 }	t_data;
 
 typedef struct s_philo
 {
 	int			id;
-	long		dead_time;
 	int			meals;
 	char		*left;
 	char		*right;
@@ -53,5 +52,6 @@ void	philos_detach(t_philo **philo);
 void	thinking (t_philo *philo);
 void	eating (t_philo *philo);
 void	sleeping (t_philo *philo);
+void	*host(void *arg);
 
 #endif

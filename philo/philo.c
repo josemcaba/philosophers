@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:23:19 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 11:39:40 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 13:43:08 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -26,7 +26,7 @@ int	main(int argc, char *argv[])
 {
 	t_data		data;
 	t_philo		*philo;
-	long		now;
+	pthread_t	host_id;
 
 	if (args_parse(argc, argv))
 		return (EXIT_FAILURE);
@@ -35,12 +35,10 @@ int	main(int argc, char *argv[])
 	if (philos_create(&data, &philo))
 		return (EXIT_FAILURE);
 	philos_detach(&philo);
-	usleep(10000000);
-	data.one_death = 2;
-	now_time(&now);
-	printf("%ld %d died\n", now, philo->data->one_death);
-	usleep(500000);
+	pthread_create(&host_id, NULL, host, &data);
+	pthread_join(host_id, NULL);
 	free (data.forks);
+	free (data.black_holes);
 	free (philo);
 	return (EXIT_SUCCESS);
 }

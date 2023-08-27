@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 11:28:04 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:48:03 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -33,7 +33,7 @@ void	*philosopher(void *arg)
 
 	philo = (t_philo *)arg;
 	now_time(&now);
-	philo->dead_time = now + philo->data->t_die;
+	philo->data->black_holes[philo->id - 1] = now + philo->data->t_die;
 	while (!philo->data->one_death)
 	{
 		thinking(philo);
@@ -78,4 +78,29 @@ void	philos_detach(t_philo **philo)
 	i = -1;
 	while (++i < (*philo)->data->n_philos)
 		pthread_detach((*philo)[i].th_id);
+}
+
+void	*host(void *arg)
+{
+	t_data	*data;
+	int		i;
+	long	now;
+
+	data = (t_data *)arg;
+	while (!data->one_death)
+	{
+		i = -1;
+		while (++i < data->n_philos)
+		{
+			now_time(&now);
+			if (now > data->black_holes[i])
+			{
+				data->one_death = i + 1;
+				printf("%ld %d died\n", now, data->one_death);
+				break ;
+			}
+		}
+	}
+	usleep(1000);
+	return (NULL);
 }

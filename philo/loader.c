@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 11:48:14 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 14:12:57 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,6 +25,34 @@ static int	ft_atoi(const char *str)
 	return (number);
 }
 
+int	forks_load(t_data *data)
+{
+	data->forks = malloc(data->n_philos * sizeof(char));
+	if (!data->forks)
+	{
+		ft_putstr_fd("ERROR: Can not allocate memory for forks\n", 2);
+		return (EXIT_FAILURE);
+	}
+	memset(data->forks, 0, data->n_philos * sizeof(char));
+	return (EXIT_SUCCESS);
+}
+
+int	black_holes_load(t_data *data)
+{
+	int	i;
+
+	data->black_holes = malloc(data->n_philos * sizeof(long));
+	if (!data->black_holes)
+	{
+		ft_putstr_fd("ERROR: Can not allocate memory for black_holes\n", 2);
+		return (EXIT_FAILURE);
+	}
+	i = -1;
+	while (++i < data->n_philos)
+		data->black_holes[i] = 0x7fffffffffffffff;
+	return (EXIT_SUCCESS);
+}
+
 int	data_load(t_data *data, int argc, char *argv[])
 {
 	data->n_philos = ft_atoi(argv[1]);
@@ -40,12 +68,9 @@ int	data_load(t_data *data, int argc, char *argv[])
 	data->one_death = 0;
 	if (argc == 6)
 		data->n_meals = ft_atoi(argv[5]);
-	data->forks = malloc(data->n_philos * sizeof(char));
-	if (!data->forks)
-	{
-		ft_putstr_fd("ERROR: Can not allocate memory for forks\n", 2);
+	if (forks_load(data))
 		return (EXIT_FAILURE);
-	}
-	memset(data->forks, 0, data->n_philos * sizeof(char));
+	if (black_holes_load(data))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
