@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/26 15:08:39 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/27 00:52:14 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,15 +14,14 @@
 
 void	ft_putstr_fd(char *str, int fd)
 {
-	int	len;
+	int	i;
 
-	len = 0;
-	while (str[len])
-		len++;
-	write(fd, str, len);
+	i = 0;
+	while (str[i])
+		write(fd, &str[i++], 1);
 }
 
-int	parser(int argc, char *argv[])
+int	args_parse(int argc, char *argv[])
 {
 	int	i;
 	int	j;
@@ -30,7 +29,7 @@ int	parser(int argc, char *argv[])
 	if ((argc != 5) && (argc != 6))
 	{
 		ft_putstr_fd("ERROR: Wrong number of parameters\n", 2);
-		return (NOK);
+		return (EXIT_FAILURE);
 	}
 	i = 0;
 	while (++i < argc)
@@ -43,10 +42,10 @@ int	parser(int argc, char *argv[])
 				ft_putstr_fd("ERROR: Parameter \"", 2);
 				ft_putstr_fd(argv[i], 2);
 				ft_putstr_fd("\" is invalid\n", 2);
-				return (NOK);
+				return (EXIT_FAILURE);
 			}
 			j++;
 		}
 	}
-	return (OK);
+	return (EXIT_SUCCESS);
 }

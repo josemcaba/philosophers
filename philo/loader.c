@@ -1,29 +1,16 @@
 /******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   load_data.c                                        :+:      :+:    :+:   */
+/*   loader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/26 14:51:03 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/26 15:12:44 by jocaball         ###   ########.fr       */
+/*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
+/*   Updated: 2023/08/27 00:52:00 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "philo.h"
-
-static void	*ft_calloc(int count, int size)
-{
-	char	*ptr;
-	int		total_size;
-
-	total_size = count * size;
-	ptr = (char *)malloc(total_size);
-	if (!ptr)
-		return (0);
-	memset(ptr, 0, total_size);
-	return ((void *)ptr);
-}
 
 static int	ft_atoi(const char *str)
 {
@@ -38,13 +25,13 @@ static int	ft_atoi(const char *str)
 	return (number);
 }
 
-int	load_data(t_data *data, int argc, char *argv[])
+int	data_load(t_data *data, int argc, char *argv[])
 {
-	data->n_philo = ft_atoi(argv[1]);
-	if (!data->n_philo)
+	data->n_philos = ft_atoi(argv[1]);
+	if (!data->n_philos)
 	{
 		ft_putstr_fd("ERROR: Invalid number of philosophers\n", 2);
-		return (NOK);
+		return (EXIT_FAILURE);
 	}
 	data->t_die = ft_atoi(argv[2]);
 	data->t_eat = ft_atoi(argv[3]);
@@ -52,11 +39,12 @@ int	load_data(t_data *data, int argc, char *argv[])
 	data->n_meals = -1;
 	if (argc == 6)
 		data->n_meals = ft_atoi(argv[5]);
-	data->forks = ft_calloc(data->n_philo, sizeof(char));
+	data->forks = malloc(data->n_philos * sizeof(char));
 	if (!data->forks)
 	{
 		ft_putstr_fd("ERROR: Can not allocate memory for forks\n", 2);
-		return (NOK);
+		return (EXIT_FAILURE);
 	}
-	return (OK);
+	memset(data->forks, 0, data->n_philos * sizeof(char));
+	return (EXIT_SUCCESS);
 }
