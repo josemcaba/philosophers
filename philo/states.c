@@ -6,60 +6,97 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 14:52:51 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/28 14:49:25 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "philo.h"
 
+void	print_status(char *str, t_philo *philo, long *now)
+{
+	pthread_mutex_lock(&philo->data->ctrl_mtx);
+	*now = 0;
+	if (!philo->data->dinner_is_over)
+	{
+		now_time(now);
+		printf("%ld %d %s\n", *now, philo->id, str);
+	}
+	pthread_mutex_unlock(&philo->data->ctrl_mtx);
+}
+
 // Está pensando mientras intenta conseguir los tenedores
 void	thinking (t_philo *philo)
 {
-	long now;
-	
-	if (philo->data->one_death)
-		return ;
-	now_time(&now);
-	printf("%ld %d is thinking\n", now, philo->id);
-	while (!philo->left && !philo->right)
+	long	now;
+
+	print_status("is thinking", philo, &now);
+	while (!philo->left_fork && !philo->right_fork)
 	{
-		if (philo->data->one_death)
+		if (philo->data->dinner_is_over)
 			return ;
-		*philo->left = 1;
-		*philo->right = 1;
+		philo->left_fork = (pthread_mutex_t *)1;
+		philo->right_fork = (pthread_mutex_t *)1 ;
 	}
-	printf("%ld %d has taken a fork\n", now, philo->id);
+	print_status("has taken a fork", philo, &now);
 }
 
 void	eating (t_philo *philo)
 {
-	long now;
-	
-	if (philo->data->one_death)
-		return ;
-	now_time(&now);	
-	philo->data->black_holes[philo->id - 1] = now + philo->data->t_die;
-	printf("%ld %d is eating\n", now, philo->id);
-	while (delta_time(now) < philo->data->t_eat)
-		if (philo->data->one_death)
+	long	now;
+
+	print_status("is eating", philo, &now);
+	philo->data->black_holes[philo->id - 1] = now + philo->data->time_die;
+	while (delta_time(now) < philo->data->time_eat)
+		if (philo->data->dinner_is_over)
 			return ;
-	if (philo->data->n_meals >= 0)
+	if (philo->data->min_meals >= 0)
 	{
-		philo->meals++;
+		philo->nbr_meals++;
 	}
-	*philo->left = 0;
-	*philo->right = 0;
+	philo->left_fork = NULL;
+	philo->right_fork = NULL;
 }
 
 void	sleeping (t_philo *philo)
 {
-	long now;
+	long 	now;
+	long	delta;
 	
-	if (philo->data->one_death)
-		return ;
-	now_time(&now);
-	printf("%ld %d is sleeping\n", now, philo->id);
-	while (delta_time(now) < philo->data->t_sleep)
-		if (philo->data->one_death)
+	print_status("is sleeping", philo, &now);
+	delta = delta_time(now);
+	while (delta < philo->data->time_sleep && \
+ 			!philo->data->dinner_is_over)
+	{
+		printf("%ld\n", philo->data->black_holes[philo->id]);
+		if (philo->data->black_holes[philo->id] && \
+			now + delta >= philo->data->black_holes[philo->id])
+		{
+			print_status("died sleeping", philo, &now);
+			philo->data->dinner_is_over = philo->id;
 			return ;
+		}
+		delta = delta_time(now);
+	}
 }
+
+/*
+// void	sleeping (t_philo *philo)
+// {
+// 	long	now;
+// 	long	delta;
+
+// 	print_status("is sleeping", philo, &now);
+// 	delta = delta_time(now);
+// 	while (delta < philo->data->t_sleep && \
+// 			!philo->data->one_death)
+// 	{
+// 		if (now + delta >= philo->data->black_holes[philo->id])
+// 		{
+// 			print_status("diedddd", philo, &now);
+// 			philo->data->one_death = philo->id;
+// 			return ;
+// 		}
+// 		delta = delta_time(now);
+// 	}
+// }
+*/

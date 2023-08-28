@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 14:48:03 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/28 14:20:20 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -33,8 +33,8 @@ void	*philosopher(void *arg)
 
 	philo = (t_philo *)arg;
 	now_time(&now);
-	philo->data->black_holes[philo->id - 1] = now + philo->data->t_die;
-	while (!philo->data->one_death)
+	philo->data->black_holes[philo->id - 1] = now + philo->data->time_die;
+	while (!philo->data->dinner_is_over)
 	{
 		thinking(philo);
 		eating(philo);
@@ -43,64 +43,41 @@ void	*philosopher(void *arg)
 	return (NULL);
 }
 
-int	philos_create(t_data *data, t_philo **philo)
-{
-	int	i;
-
-	*philo = malloc(data->n_philos * sizeof(t_philo));
-	if (!(*philo))
-	{
-		ft_putstr_fd("ERROR: Can not allocate memory for philosophers\n", 2);
-		free (data->forks);
-		return (EXIT_FAILURE);
-	}
-	memset(*philo, 0, data->n_philos * sizeof(t_philo));
-	i = -1;
-	while (++i < data->n_philos)
-	{
-		(*philo)[i].data = data;
-		(*philo)[i].id = i + 1;
-		(*philo)[i].right = &data->forks[i];
-		(*philo)[i].left = &data->forks[i];
-		if ((i == 0) && (data->n_philos > 1))
-			(*philo)[i].left = &data->forks[data->n_philos - 1];
-		else if (data->n_philos > 1)
-			(*philo)[i].left = &data->forks[i - 1];
-		pthread_create(&(*philo)[i].th_id, NULL, philosopher, &(*philo)[i]);
-	}
-	return (EXIT_SUCCESS);
-}
-
 void	philos_detach(t_philo **philo)
 {
 	int	i;
 
 	i = -1;
-	while (++i < (*philo)->data->n_philos)
+	while (++i < (*philo)->data->nbr_philos)
 		pthread_detach((*philo)[i].th_id);
 }
 
-void	*host(void *arg)
+int	philos_create(t_data *data, t_philo **philo)
 {
-	t_data	*data;
-	int		i;
-	long	now;
+	int	i;
 
-	data = (t_data *)arg;
-	while (!data->one_death)
+	*philo = malloc(data->nbr_philos * sizeof(t_philo));
+	if (!(*philo))
 	{
-		i = -1;
-		while (++i < data->n_philos)
-		{
-			now_time(&now);
-			if (now > data->black_holes[i])
-			{
-				data->one_death = i + 1;
-				printf("%ld %d died\n", now, data->one_death);
-				break ;
-			}
-		}
+		ft_putstr_fd("ERROR: Can not allocate memory for philosophers\n", 2);
+		free (data->fork);
+		return (EXIT_FAILURE);
 	}
-	usleep(1000);
-	return (NULL);
+	memset(*philo, 0, data->nbr_philos * sizeof(t_philo));
+	i = -1;
+	while (++i < data->nbr_philos)
+	{
+		(*philo)[i].data = data;
+		(*philo)[i].id = i + 1;
+		(*philo)[i].right_fork = &data->fork[i];
+		(*philo)[i].left_fork = &data->fork[i];
+		if ((i == 0) && (data->nbr_philos > 1))
+			(*philo)[i].left_fork = &data->fork[data->nbr_philos - 1];
+		else if (data->nbr_philos > 1)
+			(*philo)[i].left_fork = &data->fork[i - 1];
+		pthread_create(&(*philo)[i].th_id, NULL, philosopher, &(*philo)[i]);
+	}
+	philos_detach(philo);
+	return (EXIT_SUCCESS);
 }
+

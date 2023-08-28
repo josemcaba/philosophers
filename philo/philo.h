@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/27 13:42:47 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/28 14:17:27 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -22,24 +22,25 @@
 
 typedef struct s_data
 {
-	int		n_philos;
-	int		t_die;
-	int		t_eat;
-	int		t_sleep;
-	int		n_meals;
-	char	*forks;
-	int		one_death;
-	long	*black_holes;
+	int				nbr_philos;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				min_meals;
+	pthread_mutex_t	*fork;
+	int				dinner_is_over;
+	long			*black_holes;
+	pthread_mutex_t	ctrl_mtx;
 }	t_data;
 
 typedef struct s_philo
 {
-	int			id;
-	int			meals;
-	char		*left;
-	char		*right;
-	pthread_t	th_id;
-	t_data		*data;
+	int					id;
+	int					nbr_meals;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
+	pthread_t			th_id;
+	t_data				*data;
 }	t_philo;
 
 int		args_parse(int argc, char *argv[]);
@@ -52,6 +53,6 @@ void	philos_detach(t_philo **philo);
 void	thinking (t_philo *philo);
 void	eating (t_philo *philo);
 void	sleeping (t_philo *philo);
-void	*host(void *arg);
+void	controller(t_data *data, t_philo **philo);
 
 #endif
