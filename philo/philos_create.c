@@ -1,12 +1,12 @@
 /******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
+/*   philos_create.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/28 14:20:20 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/28 22:36:45 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -26,15 +26,13 @@ Si el programa finaliza antes de que finalice el thread, los recursos no
 seran liberados. Produciendo leaks.
 */
 
-void	*philosopher(void *arg)
+void	*philo_th(void *arg)
 {
 	t_philo	*philo;
-	long	now;
 
 	philo = (t_philo *)arg;
-	now_time(&now);
-	philo->data->black_holes[philo->id - 1] = now + philo->data->time_die;
-	while (!philo->data->dinner_is_over)
+	philo->black_hole = now() + philo->data->time_die; 
+	while (!philo->data->finish)
 	{
 		thinking(philo);
 		eating(philo);
@@ -52,32 +50,50 @@ void	philos_detach(t_philo **philo)
 		pthread_detach((*philo)[i].th_id);
 }
 
-int	philos_create(t_data *data, t_philo **philo)
+int	philos_init(t_data *data, t_philo **philos)
 {
 	int	i;
 
-	*philo = malloc(data->nbr_philos * sizeof(t_philo));
-	if (!(*philo))
-	{
-		ft_putstr_fd("ERROR: Can not allocate memory for philosophers\n", 2);
-		free (data->fork);
-		return (EXIT_FAILURE);
-	}
-	memset(*philo, 0, data->nbr_philos * sizeof(t_philo));
+	*philos = malloc(data->nbr_philos * sizeof(t_philo));
+	if (!(*philos))
+		return (error("Can not allocate memory for philosophers\n"));
 	i = -1;
 	while (++i < data->nbr_philos)
 	{
-		(*philo)[i].data = data;
-		(*philo)[i].id = i + 1;
-		(*philo)[i].right_fork = &data->fork[i];
-		(*philo)[i].left_fork = &data->fork[i];
-		if ((i == 0) && (data->nbr_philos > 1))
-			(*philo)[i].left_fork = &data->fork[data->nbr_philos - 1];
-		else if (data->nbr_philos > 1)
-			(*philo)[i].left_fork = &data->fork[i - 1];
-		pthread_create(&(*philo)[i].th_id, NULL, philosopher, &(*philo)[i]);
+		(*philos)[i].data = data;
+		(*philos)[i].id = i + 1;
+		(*philos)[i].nbr_meals = 0;
+		if (pthread_mutex_init(&(*philos)[i].meals_hole_mtx, NULL))
+		{
+			free(*philos);
+			return (error("Can not init meals_hole mutex\n"));
+		}
+		if (pthread_mutex_init(&(*philos)[i].right_fork, NULL))
+		{
+			free(*philos);
+			return (error("Can not init right_fork mutex\n"));
+		}
+		if (i > 0)
+			(*philos)[i].left_fork = &(*philos)[i - 1].right_fork;
 	}
-	philos_detach(philo);
+	(*philos)[0].left_fork = &(*philos)[data->nbr_philos - 1].right_fork;
 	return (EXIT_SUCCESS);
 }
 
+int philos_create(t_data *data, t_philo **philos)
+{
+	int i;
+	
+	if (philos_init(data, philos))
+		return (EXIT_FAILURE);
+	i = -1;
+	while (++i < data->nbr_philos)
+	{
+		pthread_mutex_lock(&(*philos)[i].meals_hole_mtx);
+		(*philos)[i].black_hole = now() + data->time_die;
+		pthread_mutex_unlock(&(*philos)[i].meals_hole_mtx);
+		if (pthread_create(&(*philos)[i].th_id, NULL, philo_th, &(*philos)[i]))
+			return (error("Can not create thread for philosopher\n"));
+	}
+	return (EXIT_SUCCESS);
+}

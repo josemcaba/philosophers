@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:23:19 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/28 14:30:01 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/28 20:52:06 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -25,17 +25,15 @@ debemos liberarlos expresamente con pthread_detach
 int	main(int argc, char *argv[])
 {
 	t_data			data;
-	t_philo			*philo;
+	t_philo			*philos;
 
-	if (args_parse(argc, argv))
+	if (data_init(&data, argc, argv))
 		return (EXIT_FAILURE);
-	if (data_load(&data, argc, argv))
+	if (philos_create(&data, &philos))
 		return (EXIT_FAILURE);
-	if (philos_create(&data, &philo))
-		return (EXIT_FAILURE);
-	controller(&data, &philo);
-	free (data.fork);
-	free (data.black_holes);
-	free (philo);
+	//controller(&data, &philo);
+	//free (data.fork);
+	//free (data.black_holes);
+	//free (philo);
 	return (EXIT_SUCCESS);
 }
