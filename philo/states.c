@@ -12,8 +12,14 @@
 
 #include "philo.h"
 
-void	print_status(char *str, t_philo *philo)
+void	print_state(char *str, t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->finish_mtx);
+	if (philo->data->finish)
+	{
+		pthread_mutex_unlock(&philo->data->finish_mtx);
+		return ;
+	}
 	pthread_mutex_lock(&philo->data->print_mtx);
 	printf("%ld %d %s\n", now(), philo->id, str);
 	pthread_mutex_unlock(&philo->data->print_mtx);
@@ -22,20 +28,20 @@ void	print_status(char *str, t_philo *philo)
 // Está pensando mientras intenta conseguir los tenedores
 void	thinking (t_philo *philo)
 {
-	print_status("is thinking", philo);
+	print_state("is thinking", philo);
 	if (philo->id % 2)
 	{
 		pthread_mutex_lock(&philo->right_fork);
-		print_status("has taken a fork", philo);
+		print_state("has taken a fork", philo);
 		pthread_mutex_lock(philo->left_fork);
-		print_status("has taken a fork", philo);
+		print_state("has taken a fork", philo);
 	}
 	else
 	{
 		pthread_mutex_lock(philo->left_fork);
-		print_status("has taken a fork", philo);
+		print_state("has taken a fork", philo);
 		pthread_mutex_lock(&philo->right_fork);
-		print_status("has taken a fork", philo);		
+		print_state("has taken a fork", philo);		
 	}
 }
 
@@ -43,8 +49,8 @@ void	thinking (t_philo *philo)
 // {
 // 	long	now;
 
-// 	print_status("is eating", philo, &now);
-// 	philo->data->black_holes[philo->id - 1] = now + philo->data->time_die;
+// 	print_state("is eating", philo, &now);
+// 	philo->data->black_holes[philo->id - 1] = now() + philo->data->time_die;
 // 	while (delta_time(now) < philo->data->time_eat)
 // 		if (philo->data->dinner_is_over)
 // 			return ;
@@ -52,8 +58,8 @@ void	thinking (t_philo *philo)
 // 	{
 // 		philo->nbr_meals++;
 // 	}
-// 	philo->left_fork = NULL;
-// 	philo->right_fork = NULL;
+// 	pthread_mutex_unlock(&philo->right_fork);
+// 	pthread_mutex_unlock(philo->left_fork);
 // }
 
 // void	sleeping (t_philo *philo)
