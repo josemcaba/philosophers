@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/28 22:36:11 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/29 01:59:11 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -30,6 +30,7 @@ typedef struct s_data
 	pthread_mutex_t	full_philos_mtx;
 	int				finish;
 	pthread_mutex_t	finish_mtx;
+	pthread_mutex_t	print_mtx;
 }	t_data;
 
 typedef struct s_philo

@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/28 22:36:45 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/29 01:33:57 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -31,23 +31,26 @@ void	*philo_th(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	philo->black_hole = now() + philo->data->time_die; 
+	pthread_mutex_lock(&philo->data->finish_mtx);
 	while (!philo->data->finish)
 	{
+		pthread_mutex_unlock(&philo->data->finish_mtx);
 		thinking(philo);
 		eating(philo);
 		sleeping(philo);
+		pthread_mutex_lock(&philo->data->finish_mtx);
 	}
+	pthread_mutex_unlock(&philo->data->finish_mtx);
 	return (NULL);
 }
 
-void	philos_detach(t_philo **philo)
+int	mutexs_init(t_philo *philo)
 {
-	int	i;
-
-	i = -1;
-	while (++i < (*philo)->data->nbr_philos)
-		pthread_detach((*philo)[i].th_id);
+	if (pthread_mutex_init(&(*philo).meals_hole_mtx, NULL))
+		return (error("Can not init meals_hole mutex\n"));
+	if (pthread_mutex_init(&(*philo).right_fork, NULL))
+		return (error("Can not init right_fork mutex\n"));
+	return (EXIT_SUCCESS);
 }
 
 int	philos_init(t_data *data, t_philo **philos)
@@ -63,15 +66,10 @@ int	philos_init(t_data *data, t_philo **philos)
 		(*philos)[i].data = data;
 		(*philos)[i].id = i + 1;
 		(*philos)[i].nbr_meals = 0;
-		if (pthread_mutex_init(&(*philos)[i].meals_hole_mtx, NULL))
+		if (mutexs_init(&(*philos)[i]))
 		{
 			free(*philos);
-			return (error("Can not init meals_hole mutex\n"));
-		}
-		if (pthread_mutex_init(&(*philos)[i].right_fork, NULL))
-		{
-			free(*philos);
-			return (error("Can not init right_fork mutex\n"));
+			return (EXIT_FAILURE);
 		}
 		if (i > 0)
 			(*philos)[i].left_fork = &(*philos)[i - 1].right_fork;

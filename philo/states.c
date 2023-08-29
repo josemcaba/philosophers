@@ -6,39 +6,38 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/28 22:39:10 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/29 02:22:48 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
-// #include "philo.h"
+#include "philo.h"
 
-// void	print_status(char *str, t_philo *philo, long *now)
-// {
-// 	pthread_mutex_lock(&philo->data->ctrl_mtx);
-// 	*now = 0;
-// 	if (!philo->data->dinner_is_over)
-// 	{
-// 		now_time(now);
-// 		printf("%ld %d %s\n", *now, philo->id, str);
-// 	}
-// 	pthread_mutex_unlock(&philo->data->ctrl_mtx);
-// }
+void	print_status(char *str, t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->print_mtx);
+	printf("%ld %d %s\n", now(), philo->id, str);
+	pthread_mutex_unlock(&philo->data->print_mtx);
+}
 
-// // Está pensando mientras intenta conseguir los tenedores
-// void	thinking (t_philo *philo)
-// {
-// 	long	now;
-
-// 	print_status("is thinking", philo, &now);
-// 	while (!philo->left_fork && !philo->right_fork)
-// 	{
-// 		if (philo->data->dinner_is_over)
-// 			return ;
-// 		philo->left_fork = (pthread_mutex_t *)1;
-// 		philo->right_fork = (pthread_mutex_t *)1 ;
-// 	}
-// 	print_status("has taken a fork", philo, &now);
-// }
+// Está pensando mientras intenta conseguir los tenedores
+void	thinking (t_philo *philo)
+{
+	print_status("is thinking", philo);
+	if (philo->id % 2)
+	{
+		pthread_mutex_lock(&philo->right_fork);
+		print_status("has taken a fork", philo);
+		pthread_mutex_lock(philo->left_fork);
+		print_status("has taken a fork", philo);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_status("has taken a fork", philo);
+		pthread_mutex_lock(&philo->right_fork);
+		print_status("has taken a fork", philo);		
+	}
+}
 
 // void	eating (t_philo *philo)
 // {

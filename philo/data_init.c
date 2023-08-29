@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/28 21:55:33 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/29 02:35:58 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -46,6 +46,8 @@ static int	data_mutex_init(t_data *data)
 		return (error("Can not init mutex for nbr_full_philos"));
 	if (pthread_mutex_init(&data->finish_mtx, NULL))
 		return (error("Can not init mutex for finish"));
+	if (pthread_mutex_init(&data->print_mtx, NULL))
+		return (error("Can not init mutex for print_status"));
 	return (EXIT_SUCCESS);
 }
 
