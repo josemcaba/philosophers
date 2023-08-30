@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:30:21 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/28 20:17:05 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:22:36 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -21,7 +21,17 @@ long	now(void)
 	return (tv.tv_sec * 1000) + (tv.tv_usec * 0.001);
 }
 
-long	delta_time(long time)
+void	wait(long msec, t_philo *philo)
 {
-	return (now() - time);
+	long	start_time;
+
+	start_time = now();
+	pthread_mutex_lock(&philo->data->finish_mtx);
+	while ((now() - start_time < msec) && !philo->data->finish)
+	{
+		pthread_mutex_unlock(&philo->data->finish_mtx);
+		usleep(100); //¿Se puede rebajar?
+		pthread_mutex_lock(&philo->data->finish_mtx);
+	}
+	pthread_mutex_unlock(&philo->data->finish_mtx);	
 }

@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/29 01:33:57 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/30 15:33:48 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -41,13 +41,15 @@ void	*philo_th(void *arg)
 		pthread_mutex_lock(&philo->data->finish_mtx);
 	}
 	pthread_mutex_unlock(&philo->data->finish_mtx);
+	pthread_mutex_destroy(&philo->black_hole_mtx);
+	pthread_mutex_destroy(&philo->right_fork);
 	return (NULL);
 }
 
-int	mutexs_init(t_philo *philo)
+int	right_fork_init(t_philo *philo)
 {
-	if (pthread_mutex_init(&(*philo).meals_hole_mtx, NULL))
-		return (error("Can not init meals_hole mutex\n"));
+	if (pthread_mutex_init(&(*philo).black_hole_mtx, NULL))
+		return (error("Can not init black_hole mutex\n"));
 	if (pthread_mutex_init(&(*philo).right_fork, NULL))
 		return (error("Can not init right_fork mutex\n"));
 	return (EXIT_SUCCESS);
@@ -66,7 +68,7 @@ int	philos_init(t_data *data, t_philo **philos)
 		(*philos)[i].data = data;
 		(*philos)[i].id = i + 1;
 		(*philos)[i].nbr_meals = 0;
-		if (mutexs_init(&(*philos)[i]))
+		if (right_fork_init(&(*philos)[i]))
 		{
 			free(*philos);
 			return (EXIT_FAILURE);
@@ -87,9 +89,7 @@ int philos_create(t_data *data, t_philo **philos)
 	i = -1;
 	while (++i < data->nbr_philos)
 	{
-		pthread_mutex_lock(&(*philos)[i].meals_hole_mtx);
 		(*philos)[i].black_hole = now() + data->time_die;
-		pthread_mutex_unlock(&(*philos)[i].meals_hole_mtx);
 		if (pthread_create(&(*philos)[i].th_id, NULL, philo_th, &(*philos)[i]))
 			return (error("Can not create thread for philosopher\n"));
 	}

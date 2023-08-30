@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/29 01:59:11 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/30 14:52:06 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -26,7 +26,7 @@ typedef struct s_data
 	int				time_eat;
 	int				time_sleep;
 	int				min_meals;
-	int				nbr_full_philos;
+	int				full_philos;
 	pthread_mutex_t	full_philos_mtx;
 	int				finish;
 	pthread_mutex_t	finish_mtx;
@@ -39,7 +39,7 @@ typedef struct s_philo
 	int					id;
 	int					nbr_meals;
 	long				black_hole;
-	pthread_mutex_t		meals_hole_mtx;
+	pthread_mutex_t		black_hole_mtx;
 	pthread_mutex_t		right_fork;
 	pthread_mutex_t		*left_fork;
 	pthread_t			th_id;
@@ -48,9 +48,9 @@ typedef struct s_philo
 int		data_init(t_data *data, int argc, char *argv[]);
 int		error(char *str);
 long	now(void);
-long	delta_time(long time);
+void	wait(long msec, t_philo *philo);
+void	print_state(char *str, t_philo *philo);
 int		philos_create(t_data *data, t_philo **philo);
-void	philos_detach(t_philo **philo);
 void	thinking (t_philo *philo);
 void	eating (t_philo *philo);
 void	sleeping (t_philo *philo);

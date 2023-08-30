@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/29 02:35:58 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:51:00 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -83,12 +83,12 @@ int	data_init(t_data *data, int argc, char *argv[])
 	if (argc == 6)
 		data->min_meals = ft_atoi(argv[5]);
 	if (data->min_meals == 0)
-		return (error("Philosophers want to eat something\n"));
+		return (error("Philosophers would like to eat something\n"));
 	if (data->nbr_philos < 0 || data->time_die < 0 || \
 		data->time_eat < 0 || data->time_sleep < 0 || \
 		data->min_meals < -1)
 		return (EXIT_FAILURE);
-	data->nbr_full_philos = 0;
+	data->full_philos = 0;
 	data->finish = 0;
 	if (data_mutex_init(data))
 		return (EXIT_FAILURE);
