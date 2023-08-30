@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/30 14:52:06 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/30 23:20:51 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -28,8 +28,8 @@ typedef struct s_data
 	int				min_meals;
 	int				full_philos;
 	pthread_mutex_t	full_philos_mtx;
-	int				finish;
-	pthread_mutex_t	finish_mtx;
+	int				over;
+	pthread_mutex_t	over_mtx;
 	pthread_mutex_t	print_mtx;
 }	t_data;
 
@@ -50,7 +50,7 @@ int		error(char *str);
 long	now(void);
 void	wait(long msec, t_philo *philo);
 void	print_state(char *str, t_philo *philo);
-int		philos_create(t_data *data, t_philo **philo);
+int		philos_init(t_data *data, t_philo **philo);
 void	thinking (t_philo *philo);
 void	eating (t_philo *philo);
 void	sleeping (t_philo *philo);

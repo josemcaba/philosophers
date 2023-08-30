@@ -6,20 +6,26 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/30 15:17:46 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/31 01:02:20 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "philo.h"
 
+/* 
+The 10 microseconds are to ensure that, in case dinner is over, 
+nothing is printed and that the philosophers do not move on to
+the next state.
+*/
 void	print_state(char *str, t_philo *philo)
 {
+	usleep(10);
+	pthread_mutex_lock(&philo->data->over_mtx);
 	pthread_mutex_lock(&philo->data->print_mtx);
-	pthread_mutex_lock(&philo->data->finish_mtx);
-	if (!philo->data->finish)
+	if (!philo->data->over)
 		printf("%ld %d %s\n", now(), philo->id, str);
-	pthread_mutex_unlock(&philo->data->finish_mtx);
 	pthread_mutex_unlock(&philo->data->print_mtx);
+	pthread_mutex_unlock(&philo->data->over_mtx);
 }
 
 void	thinking (t_philo *philo)
@@ -48,8 +54,6 @@ void	eating (t_philo *philo)
 	philo->black_hole = now() + philo->data->time_die;
 	pthread_mutex_unlock(&philo->black_hole_mtx);
 	wait(philo->data->time_eat, philo);
-	pthread_mutex_unlock(&philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
 	if (philo->data->min_meals > 0)
 	{
 		if (++philo->nbr_meals == philo->data->min_meals)
@@ -59,6 +63,8 @@ void	eating (t_philo *philo)
 			pthread_mutex_unlock(&philo->data->full_philos_mtx);
 		}
 	}
+	pthread_mutex_unlock(&philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
 }
 
 void	sleeping (t_philo *philo)

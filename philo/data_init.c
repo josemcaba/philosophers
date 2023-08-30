@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/30 12:51:00 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/30 23:22:25 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -44,8 +44,8 @@ static int	data_mutex_init(t_data *data)
 {
 	if (pthread_mutex_init(&data->full_philos_mtx, NULL))
 		return (error("Can not init mutex for nbr_full_philos"));
-	if (pthread_mutex_init(&data->finish_mtx, NULL))
-		return (error("Can not init mutex for finish"));
+	if (pthread_mutex_init(&data->over_mtx, NULL))
+		return (error("Can not init mutex for over"));
 	if (pthread_mutex_init(&data->print_mtx, NULL))
 		return (error("Can not init mutex for print_status"));
 	return (EXIT_SUCCESS);
@@ -89,7 +89,7 @@ int	data_init(t_data *data, int argc, char *argv[])
 		data->min_meals < -1)
 		return (EXIT_FAILURE);
 	data->full_philos = 0;
-	data->finish = 0;
+	data->over = 0;
 	if (data_mutex_init(data))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

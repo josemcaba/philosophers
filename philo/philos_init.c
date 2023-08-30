@@ -1,12 +1,12 @@
 /******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philos_create.c                                    :+:      :+:    :+:   */
+/*   philos_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/30 15:33:48 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/30 23:22:15 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -31,16 +31,16 @@ void	*philo_th(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&philo->data->finish_mtx);
-	while (!philo->data->finish)
+	pthread_mutex_lock(&philo->data->over_mtx);
+	while (!philo->data->over)
 	{
-		pthread_mutex_unlock(&philo->data->finish_mtx);
+		pthread_mutex_unlock(&philo->data->over_mtx);
 		thinking(philo);
 		eating(philo);
 		sleeping(philo);
-		pthread_mutex_lock(&philo->data->finish_mtx);
+		pthread_mutex_lock(&philo->data->over_mtx);
 	}
-	pthread_mutex_unlock(&philo->data->finish_mtx);
+	pthread_mutex_unlock(&philo->data->over_mtx);
 	pthread_mutex_destroy(&philo->black_hole_mtx);
 	pthread_mutex_destroy(&philo->right_fork);
 	return (NULL);
@@ -52,6 +52,20 @@ int	right_fork_init(t_philo *philo)
 		return (error("Can not init black_hole mutex\n"));
 	if (pthread_mutex_init(&(*philo).right_fork, NULL))
 		return (error("Can not init right_fork mutex\n"));
+	return (EXIT_SUCCESS);
+}
+
+int philos_create(t_data *data, t_philo **philos)
+{
+	int i;
+	
+	i = -1;
+	while (++i < data->nbr_philos)
+	{
+		(*philos)[i].black_hole = now() + data->time_die;
+		if (pthread_create(&(*philos)[i].th_id, NULL, philo_th, &(*philos)[i]))
+			return (error("Can not create thread for philosopher\n"));
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -77,21 +91,7 @@ int	philos_init(t_data *data, t_philo **philos)
 			(*philos)[i].left_fork = &(*philos)[i - 1].right_fork;
 	}
 	(*philos)[0].left_fork = &(*philos)[data->nbr_philos - 1].right_fork;
-	return (EXIT_SUCCESS);
-}
-
-int philos_create(t_data *data, t_philo **philos)
-{
-	int i;
-	
-	if (philos_init(data, philos))
+	if (philos_create(data, philos))
 		return (EXIT_FAILURE);
-	i = -1;
-	while (++i < data->nbr_philos)
-	{
-		(*philos)[i].black_hole = now() + data->time_die;
-		if (pthread_create(&(*philos)[i].th_id, NULL, philo_th, &(*philos)[i]))
-			return (error("Can not create thread for philosopher\n"));
-	}
 	return (EXIT_SUCCESS);
 }
