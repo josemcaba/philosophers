@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
@@ -8,7 +8,7 @@
 /*   Created: 2023/08/26 14:30:21 by jocaball          #+#    #+#             */
 /*   Updated: 2023/08/31 11:42:00 by jocaball         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "philo.h"
 
@@ -18,7 +18,7 @@ long	now(void)
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (error("Can not get the time\n"));
-	return (tv.tv_sec * 1000) + (tv.tv_usec * 0.001);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec * 0.001));
 }
 
 /*
@@ -41,5 +41,5 @@ void	wait(long msec, t_philo *philo)
 		usleep(100);
 		pthread_mutex_lock(&philo->data->over_mtx);
 	}
-	pthread_mutex_unlock(&philo->data->over_mtx);	
+	pthread_mutex_unlock(&philo->data->over_mtx);
 }

@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   states.c                                           :+:      :+:    :+:   */
@@ -8,7 +8,7 @@
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
 /*   Updated: 2023/08/31 01:02:20 by jocaball         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "philo.h"
 
@@ -28,7 +28,7 @@ void	print_state(char *str, t_philo *philo)
 	pthread_mutex_unlock(&philo->data->over_mtx);
 }
 
-void	thinking (t_philo *philo)
+void	thinking(t_philo *philo)
 {
 	print_state("is thinking", philo);
 	if (philo->id % 2)
@@ -43,11 +43,11 @@ void	thinking (t_philo *philo)
 		pthread_mutex_lock(philo->left_fork);
 		print_state("has taken a fork", philo);
 		pthread_mutex_lock(&philo->right_fork);
-		print_state("has taken a fork", philo);		
+		print_state("has taken a fork", philo);
 	}
 }
 
-void	eating (t_philo *philo)
+void	eating(t_philo *philo)
 {
 	print_state("is eating", philo);
 	pthread_mutex_lock(&philo->black_hole_mtx);
@@ -67,7 +67,7 @@ void	eating (t_philo *philo)
 	pthread_mutex_unlock(philo->left_fork);
 }
 
-void	sleeping (t_philo *philo)
+void	sleeping(t_philo *philo)
 {
 	print_state("is sleeping", philo);
 	wait(philo->data->time_sleep, philo);

@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
@@ -8,7 +8,7 @@
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
 /*   Updated: 2023/08/31 11:49:21 by jocaball         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
@@ -51,9 +51,9 @@ long	now(void);
 void	wait(long msec, t_philo *philo);
 void	print_state(char *str, t_philo *philo);
 int		philos_init(t_data *data, t_philo **philo);
-void	thinking (t_philo *philo);
-void	eating (t_philo *philo);
-void	sleeping (t_philo *philo);
+void	thinking(t_philo *philo);
+void	eating(t_philo *philo);
+void	sleeping(t_philo *philo);
 void	controller(t_data *data, t_philo **philo);
 void	philos_join(t_data *data, t_philo **philos, int nbr);
 

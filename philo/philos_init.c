@@ -1,4 +1,4 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   philos_init.c                                      :+:      :+:    :+:   */
@@ -8,7 +8,7 @@
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
 /*   Updated: 2023/08/31 11:29:23 by jocaball         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "philo.h"
 
@@ -72,11 +72,11 @@ void	philos_join(t_data *data, t_philo **philos, int nbr)
 		pthread_join((*philos)[i].th_id, NULL);
 }
 
-int philos_create(t_data *data, t_philo **philos)
+int	philos_create(t_data *data, t_philo **philos)
 {
-	int i;
-	
-	if (data->nbr_philos ==1)
+	int	i;
+
+	if (data->nbr_philos == 1)
 	{
 		print_state("is thinking", philos[0]);
 		usleep(data->time_die * 1000);
@@ -88,7 +88,8 @@ int philos_create(t_data *data, t_philo **philos)
 		while (++i < data->nbr_philos)
 		{
 			(*philos)[i].black_hole = now() + data->time_die;
-			if (pthread_create(&(*philos)[i].th_id, NULL, philo_th, &(*philos)[i]))
+			if (pthread_create(&(*philos)[i].th_id, NULL, \
+									philo_th, &(*philos)[i]))
 			{	
 				philos_join(data, philos, i);
 				free(*philos);
