@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/31 11:55:53 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/31 13:09:44 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	check_dead(t_data *data, t_philo **philos, int *over)
 	}
 }
 
-void	check_full(t_data *data, t_philo **philos, int *over)
+void	check_full(t_data *data, int *over)
 {
 	if (*over)
 		return ;
@@ -57,7 +57,6 @@ void	check_full(t_data *data, t_philo **philos, int *over)
 void	controller(t_data *data, t_philo **philos)
 {
 	int	over;
-	int	i;
 
 	if (data->nbr_philos == 1)
 		return ;
@@ -65,7 +64,7 @@ void	controller(t_data *data, t_philo **philos)
 	while (!over)
 	{
 		check_dead(data, philos, &over);
-		check_full(data, philos, &over);
+		check_full(data, &over);
 	}
 	philos_join(data, philos, data->nbr_philos);
 	free(*philos);
