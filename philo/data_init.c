@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/30 23:22:25 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/31 09:54:13 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -43,11 +43,11 @@ static int	ft_atoi(const char *str)
 static int	data_mutex_init(t_data *data)
 {
 	if (pthread_mutex_init(&data->full_philos_mtx, NULL))
-		return (error("Can not init mutex for nbr_full_philos"));
+		return (error("Can not init mutex for full_philos\n"));
 	if (pthread_mutex_init(&data->over_mtx, NULL))
-		return (error("Can not init mutex for over"));
+		return (error("Can not init mutex for over\n"));
 	if (pthread_mutex_init(&data->print_mtx, NULL))
-		return (error("Can not init mutex for print_status"));
+		return (error("Can not init mutex for print_status\n"));
 	return (EXIT_SUCCESS);
 }
 

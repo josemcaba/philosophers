@@ -6,13 +6,13 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/31 00:40:18 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:55:53 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "philo.h"
 
-void	controller(t_data *data, t_philo **philo)
+void	controller(t_data *data, t_philo **philos)
 {
 	int	over;
 	int i;
@@ -24,20 +24,21 @@ void	controller(t_data *data, t_philo **philo)
 	{
 		/* Check dead */
 		i = -1;
-		while ((++i < data->nbr_philos)) // && !over)
+		while (!over && (++i < data->nbr_philos))
 		{
-			pthread_mutex_lock(&(*philo)[i].black_hole_mtx);
-			if (now() >= (*philo)[i].black_hole)
+			usleep(50);
+			pthread_mutex_lock(&(*philos)[i].black_hole_mtx);
+			if (now() >= (*philos)[i].black_hole)
 			{
 				pthread_mutex_lock(&data->over_mtx);
 				pthread_mutex_lock(&data->print_mtx);
 				data->over = 1;
 				over = 1;
-				printf("%ld %d %s\n", now(), (*philo)[i].id, "died");
+				printf("%ld %d %s\n", now(), (*philos)[i].id, "died");
 				pthread_mutex_unlock(&data->print_mtx);
 				pthread_mutex_unlock(&data->over_mtx);
 			}
-			pthread_mutex_unlock(&(*philo)[i].black_hole_mtx);
+			pthread_mutex_unlock(&(*philos)[i].black_hole_mtx);
 		}
 		/* Check meals */
 		pthread_mutex_lock(&data->full_philos_mtx);
@@ -53,15 +54,6 @@ void	controller(t_data *data, t_philo **philo)
 		}
 		pthread_mutex_unlock(&data->full_philos_mtx);
 	}
-	i = -1;
-	while (++i < data->nbr_philos)
-	{
-		pthread_join((*philo)[i].th_id, NULL);
-	}
-	
-	//end_dinner(&data, &philo);
-		// pthread_join(host_id, NULL);
-		// pthread_mutex_destroy(&data.pf);
-		// free (data.fork);
-		// free (data.black_holes);
+	philos_join(data, philos, data->nbr_philos);
+	free(*philos);
 }

@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/30 23:22:15 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:29:23 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -55,16 +55,31 @@ int	right_fork_init(t_philo *philo)
 	return (EXIT_SUCCESS);
 }
 
+/*
+Se fuerza la finalización de la cena y se espera a que finalicen los 
+filosofos ya creados. El numero de filosofos creados viene dado en el
+parametro nbr. 
+*/
+void	philos_join(t_data *data, t_philo **philos, int nbr)
+{
+	int	i;
+
+	pthread_mutex_lock(&data->over_mtx);
+	data->over = 1;
+	pthread_mutex_unlock(&data->over_mtx);
+	i = -1;
+	while (++i < nbr)
+		pthread_join((*philos)[i].th_id, NULL);
+}
+
 int philos_create(t_data *data, t_philo **philos)
 {
 	int i;
 	
 	if (data->nbr_philos ==1)
 	{
-		(*philos)[0].black_hole = now() + data->time_die;
 		print_state("is thinking", philos[0]);
-		print_state("has taken a fork", philos[0]);
-		wait(philos[0]->black_hole - now(), philos[0]);
+		usleep(data->time_die * 1000);
 		print_state("died", philos[0]);
 	}
 	else
@@ -74,7 +89,11 @@ int philos_create(t_data *data, t_philo **philos)
 		{
 			(*philos)[i].black_hole = now() + data->time_die;
 			if (pthread_create(&(*philos)[i].th_id, NULL, philo_th, &(*philos)[i]))
-				return (error("Can not create thread for philosopher\n"));
+			{	
+				philos_join(data, philos, i);
+				free(*philos);
+				return (error("Can not create thread for a philosopher"));
+			}
 		}
 	}
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 #    By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 14:56:28 by jocaball          #+#    #+#              #
-#    Updated: 2023/08/28 11:08:22 by jocaball         ###   ########.fr        #
+#    Updated: 2023/08/31 11:05:40 by jocaball         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -39,6 +39,6 @@ test : all
 	./philo 3 500 100 50 2
 
 test_mem : all
-	valgrind -s --leak-check=full --track-origins=yes ./philo 3 5000 100 50 2
+	valgrind -s --leak-check=full --track-origins=yes --show-leak-kinds=all  ./philo 300 5000 100 50 3
 
 phony : all clean fclean re $(NAME)
