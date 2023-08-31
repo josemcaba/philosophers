@@ -59,12 +59,23 @@ int philos_create(t_data *data, t_philo **philos)
 {
 	int i;
 	
-	i = -1;
-	while (++i < data->nbr_philos)
+	if (data->nbr_philos ==1)
 	{
-		(*philos)[i].black_hole = now() + data->time_die;
-		if (pthread_create(&(*philos)[i].th_id, NULL, philo_th, &(*philos)[i]))
-			return (error("Can not create thread for philosopher\n"));
+		(*philos)[0].black_hole = now() + data->time_die;
+		print_state("is thinking", philos[0]);
+		print_state("has taken a fork", philos[0]);
+		wait(philos[0]->black_hole - now(), philos[0]);
+		print_state("died", philos[0]);
+	}
+	else
+	{
+		i = -1;
+		while (++i < data->nbr_philos)
+		{
+			(*philos)[i].black_hole = now() + data->time_die;
+			if (pthread_create(&(*philos)[i].th_id, NULL, philo_th, &(*philos)[i]))
+				return (error("Can not create thread for philosopher\n"));
+		}
 	}
 	return (EXIT_SUCCESS);
 }

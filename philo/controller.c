@@ -17,6 +17,8 @@ void	controller(t_data *data, t_philo **philo)
 	int	over;
 	int i;
 
+ 	if (data->nbr_philos == 1)
+		return ;
 	over = 0;
 	while (!over)
 	{
