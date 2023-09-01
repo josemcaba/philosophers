@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:30:21 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/31 13:05:35 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/01 19:53:11 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ long	now(void)
 }
 
 /*
-The 100 microseconds allows the "over_mutex" to be freed long enough for
+The 50 microseconds allows the "over_mutex" to be freed long enough for
 all processes to use it while a philosopher is "eating" or "sleeping".
 A maximum of 500 microseconds should be set so that between the two states
 they do not add up to one millisecond. (Keep in mind that the "sleeping" 
 state itself already has a small delay built into it).
 The greater this number, the greater number of philosophers can be managed.
 */
-void	wait(long msec, t_philo *philo)
+void	ft_wait(long msec, t_philo *philo)
 {
 	long	start_time;
 
@@ -38,7 +38,7 @@ void	wait(long msec, t_philo *philo)
 	while ((now() - start_time < msec) && !philo->data->over)
 	{
 		pthread_mutex_unlock(&philo->data->over_mtx);
-		usleep(100);
+		usleep(50);
 		pthread_mutex_lock(&philo->data->over_mtx);
 	}
 	pthread_mutex_unlock(&philo->data->over_mtx);

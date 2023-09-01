@@ -6,29 +6,26 @@
 #    By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 14:56:28 by jocaball          #+#    #+#              #
-#    Updated: 2023/08/31 13:06:21 by jocaball         ###   ########.fr        #
+#    Updated: 2023/09/01 21:26:47 by jocaball         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -o $(NAME)
 
-HDR = $(filter-out $(shell find -type f -name '*_bonus.h'), $(shell find -type f -name '*.h'))
-SRC = $(filter-out $(shell find -type f -name '*_bonus.c'), $(shell find -type f -name '*.c'))
+HDR = philo.h
+SRC = philo.c data_init.c philos_init.c states.c controller.c time.c
 OBJ = $(SRC:%.c=%.o)
 
-HDR_BONUS = $(shell find -type f -name '*.h')
-SRC_BONUS = $(shell find -type f -name '*_bonus.c')
-OBJ_BONUS = $(SRC_BONUS:.c=.o)
-
-$(NAME) : $(OBJ) $(HDR)
+$(NAME) : $(SRC) $(HDR)
+	$(CC) $(CFLAGS) $(SRC)
 
 all: $(NAME)
 
 clean :
-	@rm -f $(OBJ) $(OBJ_BONUS)
+	@rm -f $(OBJ)
 
 fclean : clean
 	@rm -f $(NAME)
@@ -36,9 +33,10 @@ fclean : clean
 re : fclean all
 
 test : all
-	./philo 3 500 100 50 2
+	./philo 4 224 92 57 3
 
 test_mem : all
-	valgrind -s --leak-check=full --track-origins=yes --show-leak-kinds=all  ./philo 300 5000 100 50 3
+#	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./philo 3 224 92 57 3
+	valgrind --tool=helgrind ./philo 3 224 92 57 3
 
 phony : all clean fclean re $(NAME)

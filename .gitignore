@@ -2,3 +2,5 @@ philo/a.out
 philo/*.o
 philo/philo
 philo/a.exe
+philo/philo.dSYM/Contents/Resources/DWARF/philo
+philo/philo.dSYM/Contents/Info.plist

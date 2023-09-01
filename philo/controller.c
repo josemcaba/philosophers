@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/31 13:09:44 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/01 21:56:17 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	controller(t_data *data, t_philo **philos)
 
 	if (data->nbr_philos == 1)
 		return ;
+	pthread_mutex_unlock(&data->start_mtx);
 	over = 0;
 	while (!over)
 	{

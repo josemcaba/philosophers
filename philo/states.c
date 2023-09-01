@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/31 13:05:19 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/01 18:19:28 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->black_hole_mtx);
 	philo->black_hole = now() + philo->data->time_die;
 	pthread_mutex_unlock(&philo->black_hole_mtx);
-	wait(philo->data->time_eat, philo);
+	ft_wait(philo->data->time_eat, philo);
 	if (philo->data->min_meals > 0)
 	{
 		if (++philo->nbr_meals == philo->data->min_meals)
@@ -70,5 +70,5 @@ void	eating(t_philo *philo)
 void	sleeping(t_philo *philo)
 {
 	print_state("is sleeping", philo);
-	wait(philo->data->time_sleep, philo);
+	ft_wait(philo->data->time_sleep, philo);
 }
