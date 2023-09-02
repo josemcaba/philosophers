@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/01 21:59:51 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:47:48 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,12 @@ void	*philo_th(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	// pthread_mutex_lock(&philo->black_hole_mtx);
-	// printf("Esperando para empezar: %d\n", philo->id);
-	// pthread_mutex_lock(&philo->data->start_mtx);
-	// pthread_mutex_unlock(&philo->black_hole_mtx);
-	// philo->black_hole = now() + philo->data->time_die;
-	pthread_mutex_lock(&philo->data->over_mtx);
 	while (!philo->data->over)
 	{
-		pthread_mutex_unlock(&philo->data->over_mtx);
 		thinking(philo);
 		eating(philo);
 		sleeping(philo);
-		pthread_mutex_lock(&philo->data->over_mtx);
 	}
-	pthread_mutex_unlock(&philo->data->over_mtx);
 	pthread_mutex_destroy(&philo->black_hole_mtx);
 	pthread_mutex_destroy(&philo->right_fork);
 	return (NULL);
@@ -69,10 +60,7 @@ void	philos_join(t_data *data, t_philo **philos, int nbr)
 {
 	int	i;
 
-	(void)*data;
-	// pthread_mutex_lock(&data->over_mtx);
-	// data->over = 1;
-	// pthread_mutex_unlock(&data->over_mtx);
+	data->over = 1;
 	i = -1;
 	while (++i < nbr)
 		pthread_join((*philos)[i].th_id, NULL);

@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/01 18:19:28 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:48:07 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@ the next state.
 void	print_state(char *str, t_philo *philo)
 {
 	usleep(10);
-	pthread_mutex_lock(&philo->data->over_mtx);
 	pthread_mutex_lock(&philo->data->print_mtx);
 	if (!philo->data->over)
 		printf("%ld %d %s\n", now(), philo->id, str);
 	pthread_mutex_unlock(&philo->data->print_mtx);
-	pthread_mutex_unlock(&philo->data->over_mtx);
 }
 
 void	thinking(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/01 22:01:58 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:52:10 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,8 @@ static int	data_mutex_init(t_data *data)
 {
 	if (pthread_mutex_init(&data->full_philos_mtx, NULL))
 		return (error("Can not init mutex for full_philos\n"));
-	if (pthread_mutex_init(&data->over_mtx, NULL))
-		return (error("Can not init mutex for over\n"));
 	if (pthread_mutex_init(&data->print_mtx, NULL))
 		return (error("Can not init mutex for print_status\n"));
-	if (pthread_mutex_init(&data->start_mtx, NULL))
-		return (error("Can not init mutex for start\n"));
 	return (EXIT_SUCCESS);
 }
 
@@ -94,6 +90,5 @@ int	data_init(t_data *data, int argc, char *argv[])
 	data->over = 0;
 	if (data_mutex_init(data))
 		return (EXIT_FAILURE);
-	//pthread_mutex_lock(&data->start_mtx);
 	return (EXIT_SUCCESS);
 }
