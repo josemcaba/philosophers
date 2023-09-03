@@ -6,11 +6,25 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:30:21 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 16:22:27 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 17:19:44 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	random_0_9(int min, int max)
+{
+	struct timeval	tv;
+	int				n;
+
+	n = -1;
+	while (n < min || n > max)
+	{
+		gettimeofday(&tv, NULL);
+		n = tv.tv_usec % 10;
+	}
+	return (n);
+}
 
 long	now(void)
 {
