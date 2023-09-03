@@ -6,17 +6,18 @@
 #    By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 14:56:28 by jocaball          #+#    #+#              #
-#    Updated: 2023/09/02 16:14:44 by jocaball         ###   ########.fr        #
+#    Updated: 2023/09/03 16:16:13 by jocaball         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=thread
+CFLAGS = -Wall -Werror -Wextra
 
 HDR = philo.h
-SRC = philo.c data_init.c philos_init.c states.c controller.c time.c
+SRC = philo.c data_init.c philos_init.c philos_create.c states.c controller.c \
+	  time.c error.c destroyers.c
 OBJ = $(SRC:%.c=%.o)
 
 $(NAME) : $(SRC) $(HDR)
@@ -32,11 +33,24 @@ fclean : clean
 
 re : fclean all
 
-test : all
-	./philo 4 224 92 57 3
+run : fclean
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME)
+	./philo 5 224 92 57 3
 
-test_mem : all
-#	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./philo 3 224 92 57 3
-	valgrind --tool=helgrind ./philo 3 224 92 57 3
+test1 : fclean
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME) -g -fsanitize=address
+	./philo 5 224 92 57 3
+
+test2 : fclean
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME) -g -fsanitize=thread
+	./philo 5 224 92 57 3
+
+test_val1 : fclean
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME) -g
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./philo 5 224 92 57 3
+
+test_val2 : fclean
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME) -g
+	valgrind --tool=helgrind ./philo 5 224 92 57 3
 
 phony : all clean fclean re $(NAME)
