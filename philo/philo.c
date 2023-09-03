@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:23:19 by jocaball          #+#    #+#             */
-/*   Updated: 2023/08/31 13:04:52 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 00:19:14 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@ libera la memoria.
 Si finaliza el thread de otra forma que no sea usando pthread_join entonces
 debemos liberarlos expresamente con pthread_detach
 */
+int	error(char *str)
+{
+	int	i;
+
+	write(2, "ERROR: ", 7);
+	i = 0;
+	while (str[i])
+		write(2, &str[i++], 1);
+	return (EXIT_FAILURE);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_data			data;
