@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/02 11:47:48 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 02:11:11 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,16 @@ void	*philo_th(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->data->over_mtx);
 	while (!philo->data->over)
 	{
+		pthread_mutex_unlock(&philo->data->over_mtx);
 		thinking(philo);
 		eating(philo);
 		sleeping(philo);
+		pthread_mutex_lock(&philo->data->over_mtx);
 	}
-	pthread_mutex_destroy(&philo->black_hole_mtx);
-	pthread_mutex_destroy(&philo->right_fork);
+	pthread_mutex_unlock(&philo->data->over_mtx);
 	return (NULL);
 }
 
@@ -56,14 +58,22 @@ Se fuerza la finalización de la cena y se espera a que finalicen los
 filosofos ya creados. El numero de filosofos creados viene dado en el
 parametro nbr. 
 */
-void	philos_join(t_data *data, t_philo **philos, int nbr)
+void	philos_join_destroy(t_data *data, t_philo **philos, int nbr)
 {
 	int	i;
 
+	pthread_mutex_lock(&data->over_mtx);
 	data->over = 1;
+	pthread_mutex_unlock(&data->over_mtx);
 	i = -1;
 	while (++i < nbr)
 		pthread_join((*philos)[i].th_id, NULL);
+	i = -1;
+	while (++i < data->nbr_philos)
+	{
+		pthread_mutex_destroy(&(*philos)[i].black_hole_mtx);
+		pthread_mutex_destroy(&(*philos)[i].right_fork);
+	}
 }
 
 int	philos_create(t_data *data, t_philo **philos)
@@ -85,7 +95,7 @@ int	philos_create(t_data *data, t_philo **philos)
 			if (pthread_create(&(*philos)[i].th_id, NULL, \
 									philo_th, &(*philos)[i]))
 			{
-				philos_join(data, philos, i);
+				philos_join_destroy(data, philos, i);
 				free(*philos);
 				return (error("Can not create thread for a philosopher"));
 			}

@@ -6,22 +6,11 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/02 11:52:10 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 00:31:01 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	error(char *str)
-{
-	int	i;
-
-	write(2, "ERROR: ", 7);
-	i = 0;
-	while (str[i])
-		write(2, &str[i++], 1);
-	return (EXIT_FAILURE);
-}
 
 static int	ft_atoi(const char *str)
 {

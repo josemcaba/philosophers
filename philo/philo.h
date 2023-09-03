@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/02 11:50:27 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 02:00:32 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_data
 	int				full_philos;
 	pthread_mutex_t	full_philos_mtx;
 	int				over;
+	pthread_mutex_t	over_mtx;
 	pthread_mutex_t	print_mtx;
 }	t_data;
 
@@ -49,7 +50,7 @@ int		philos_init(t_data *data, t_philo **philo);
 void	controller(t_data *data, t_philo **philo);
 long	now(void);
 void	ft_wait(long msec, t_philo *philo);
-void	philos_join(t_data *data, t_philo **philos, int nbr);
+void	philos_join_destroy(t_data *data, t_philo **philos, int nbr);
 void	thinking(t_philo *philo);
 void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);

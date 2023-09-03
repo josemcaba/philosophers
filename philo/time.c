@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:30:21 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/02 19:40:07 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 02:07:08 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,12 @@ void	ft_wait(long msec, t_philo *philo)
 	long	start_time;
 
 	start_time = now();
+	pthread_mutex_lock(&philo->data->over_mtx);
 	while ((now() - start_time < msec) && !philo->data->over)
 	{
+		pthread_mutex_unlock(&philo->data->over_mtx);
 		usleep(50);
+		pthread_mutex_lock(&philo->data->over_mtx);
 	}
+	pthread_mutex_unlock(&philo->data->over_mtx);
 }

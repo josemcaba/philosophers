@@ -6,14 +6,14 @@
 #    By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 14:56:28 by jocaball          #+#    #+#              #
-#    Updated: 2023/09/03 02:14:40 by jocaball         ###   ########.fr        #
+#    Updated: 2023/09/03 02:23:41 by jocaball         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g # -fsanitize=thread
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=thread
 
 HDR = philo.h
 SRC = philo.c data_init.c philos_init.c states.c controller.c time.c

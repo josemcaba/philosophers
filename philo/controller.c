@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/02 12:26:42 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 02:04:07 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ static void	check_full(t_data *data)
 	if (data->full_philos == data->nbr_philos)
 	{
 		pthread_mutex_lock(&data->print_mtx);
+		pthread_mutex_lock(&data->over_mtx);
 		data->over = 1;
+		pthread_mutex_unlock(&data->over_mtx);
 		printf("%ld All philosophers have eaten at least %d times\n", \
 				now(), data->min_meals);
 		pthread_mutex_unlock(&data->print_mtx);
@@ -55,6 +57,6 @@ void	controller(t_data *data, t_philo **philos)
 		check_dead(data, philos);
 		check_full(data);
 	}
-	philos_join(data, philos, data->nbr_philos);
+	philos_join_destroy(data, philos, data->nbr_philos);
 	free(*philos);
 }
