@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:23:19 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 00:19:14 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 14:46:19 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,11 @@ Si usamos pthread_join para esperar a que termine, la propia pthred_join
 libera la memoria.
  
 Si finaliza el thread de otra forma que no sea usando pthread_join entonces
-debemos liberarlos expresamente con pthread_detach
-*/
-int	error(char *str)
-{
-	int	i;
+debemos liberarlos expresamente con pthread_detach.
 
-	write(2, "ERROR: ", 7);
-	i = 0;
-	while (str[i])
-		write(2, &str[i++], 1);
-	return (EXIT_FAILURE);
-}
+Si el programa finaliza antes de que finalice el thread, los recursos no
+seran liberados. Produciendo leaks.
+*/
 
 int	main(int argc, char *argv[])
 {
@@ -42,6 +35,9 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	if (philos_init(&data, &philos))
 		return (EXIT_FAILURE);
+	if (philos_create(&data, &philos))
+		return (EXIT_FAILURE);
 	controller(&data, &philos);
+	free(philos);
 	return (EXIT_SUCCESS);
 }

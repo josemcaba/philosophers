@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 02:00:32 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 15:17:04 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,17 @@ typedef struct s_philo
 
 int		data_init(t_data *data, int argc, char *argv[]);
 int		philos_init(t_data *data, t_philo **philo);
+int		philos_create(t_data *data, t_philo **philos);
 void	controller(t_data *data, t_philo **philo);
+void	mutexes_destroy(t_data *data, t_philo **philos, int nbr);
+void	philos_destroy(t_data *data, t_philo **philos, int nbr);
+
 long	now(void);
-void	ft_wait(long msec, t_philo *philo);
-void	philos_join_destroy(t_data *data, t_philo **philos, int nbr);
+void	ft_wait(long msec, t_data *data);
+void	print_state(char *str, t_philo *philo);
 void	thinking(t_philo *philo);
 void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);
 int		error(char *str);
-void	print_state(char *str, t_philo *philo);
 
 #endif

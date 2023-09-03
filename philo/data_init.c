@@ -6,11 +6,28 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 00:31:01 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 16:29:07 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+/*
+No es necesario destruir los mutexes antes de salir del programa ya que 
+el sistema libera los recursos de los mutexes automáticamente.
+
+OJO: Salir del thread con algun mutex bloqueado si los detecta VALGRIND
+*/
+static int	data_mutex_init(t_data *data)
+{
+	if (pthread_mutex_init(&data->full_philos_mtx, NULL))
+		return (error("Can not init mutex for full_philos\n"));
+	if (pthread_mutex_init(&data->over_mtx, NULL))
+		return (error("Can not init mutex for over\n"));
+	if (pthread_mutex_init(&data->print_mtx, NULL))
+		return (error("Can not init mutex for print_status\n"));
+	return (EXIT_SUCCESS);
+}
 
 static int	ft_atoi(const char *str)
 {
@@ -27,15 +44,6 @@ static int	ft_atoi(const char *str)
 	if (number > 0x7fffffff)
 		return (error("Numbers must be int\n") * -2);
 	return (number);
-}
-
-static int	data_mutex_init(t_data *data)
-{
-	if (pthread_mutex_init(&data->full_philos_mtx, NULL))
-		return (error("Can not init mutex for full_philos\n"));
-	if (pthread_mutex_init(&data->print_mtx, NULL))
-		return (error("Can not init mutex for print_status\n"));
-	return (EXIT_SUCCESS);
 }
 
 static int	args_parse(int argc, char *argv[])
