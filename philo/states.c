@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/04 00:59:29 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/04 02:28:29 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	thinking(t_philo *philo)
 				pthread_mutex_unlock(philo->left_fork_mtx);
 				break ;
 			}
-			else if (now() + philo->data->time_eat + philo->data->time_sleep + 10 < philo->black_hole)
+			else // if (now() + philo->data->time_eat + philo->data->time_sleep + 10 < philo->black_hole)
 			{
 				pthread_mutex_lock(&philo->right_fork_mtx);
 				philo->right_fork = 0;
@@ -75,7 +75,7 @@ void	thinking(t_philo *philo)
 				pthread_mutex_unlock(&philo->right_fork_mtx);
 				break ;
 			}
-			else if (now() + philo->data->time_eat + philo->data->time_sleep + 10 < philo->black_hole)
+			else // if (now() + philo->data->time_eat + philo->data->time_sleep + 10 < philo->black_hole)
 			{
 				pthread_mutex_lock(philo->left_fork_mtx);
 				*philo->left_fork = 0;
