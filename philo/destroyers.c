@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:36:32 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 12:43:25 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/04 00:16:23 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	mutexes_destroy(t_data *data, t_philo **philos, int nbr)
 	while (++i < nbr)
 	{
 		pthread_mutex_destroy(&(*philos)[i].black_hole_mtx);
-		pthread_mutex_destroy(&(*philos)[i].right_fork);
+		pthread_mutex_destroy(&(*philos)[i].right_fork_mtx);
 	}
 }
 

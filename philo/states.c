@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 16:27:51 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/04 00:59:29 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,61 @@ void	print_state(char *str, t_philo *philo)
 void	thinking(t_philo *philo)
 {
 	print_state("is thinking", philo);
-	if (philo->id % 2)
+	while (!philo->data->over && philo->id % 2 == 0)
 	{
-		pthread_mutex_lock(&philo->right_fork);
-		print_state("has taken a fork", philo);
-		pthread_mutex_lock(philo->left_fork);
-		print_state("has taken a fork", philo);
+		pthread_mutex_lock(&philo->right_fork_mtx);
+		if (philo->right_fork == 0)
+		{
+			philo->right_fork = 1;
+			print_state("has taken right fork", philo);
+			pthread_mutex_unlock(&philo->right_fork_mtx);
+			pthread_mutex_lock(philo->left_fork_mtx);
+			if (*philo->left_fork == 0)
+			{
+				*philo->left_fork = 1;
+				print_state("has taken left fork", philo);
+				pthread_mutex_unlock(philo->left_fork_mtx);
+				break ;
+			}
+			else if (now() + philo->data->time_eat + philo->data->time_sleep + 10 < philo->black_hole)
+			{
+				pthread_mutex_lock(&philo->right_fork_mtx);
+				philo->right_fork = 0;
+				print_state("has released right fork", philo);			
+				//pthread_mutex_unlock(&philo->right_fork_mtx);
+			}
+			pthread_mutex_unlock(philo->left_fork_mtx);
+		}
+		pthread_mutex_unlock(&philo->right_fork_mtx);
+		usleep(10);
 	}
-	else
+	while (!philo->data->over && philo->id % 2 == 1)
 	{
-		pthread_mutex_lock(philo->left_fork);
-		print_state("has taken a fork", philo);
-		pthread_mutex_lock(&philo->right_fork);
-		print_state("has taken a fork", philo);
+		pthread_mutex_lock(philo->left_fork_mtx);
+		if (*philo->left_fork == 0)
+		{
+			*philo->left_fork = 1;
+			print_state("has taken left fork", philo);
+			pthread_mutex_unlock(philo->left_fork_mtx);
+			pthread_mutex_lock(&philo->right_fork_mtx);
+			if (philo->right_fork == 0)
+			{
+				philo->right_fork = 1;
+				print_state("has taken right fork", philo);
+				pthread_mutex_unlock(&philo->right_fork_mtx);
+				break ;
+			}
+			else if (now() + philo->data->time_eat + philo->data->time_sleep + 10 < philo->black_hole)
+			{
+				pthread_mutex_lock(philo->left_fork_mtx);
+				*philo->left_fork = 0;
+				print_state("has released left fork", philo);
+				//pthread_mutex_unlock(philo->left_fork_mtx);
+			}
+			pthread_mutex_unlock(&philo->right_fork_mtx);
+		}
+		pthread_mutex_unlock(philo->left_fork_mtx);
+		usleep(10);	
 	}
 }
 
@@ -63,8 +105,12 @@ void	eating(t_philo *philo)
 			pthread_mutex_unlock(&philo->data->full_philos_mtx);
 		}
 	}
-	pthread_mutex_unlock(&philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_lock(&philo->right_fork_mtx);
+	philo->right_fork = 0;
+	pthread_mutex_unlock(&philo->right_fork_mtx);
+	pthread_mutex_lock(philo->left_fork_mtx);
+	*philo->left_fork = 0;
+	pthread_mutex_unlock(philo->left_fork_mtx);
 }
 
 void	sleeping(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 17:23:11 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/03 20:53:06 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ typedef struct s_philo
 	int					nbr_meals;
 	long				black_hole;
 	pthread_mutex_t		black_hole_mtx;
-	pthread_mutex_t		right_fork;
-	pthread_mutex_t		*left_fork;
+	int					right_fork;
+	pthread_mutex_t		right_fork_mtx;
+	int					*left_fork;
+	pthread_mutex_t		*left_fork_mtx;
 	pthread_t			th_id;
 }	t_philo;
 
