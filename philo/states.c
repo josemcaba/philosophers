@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/04 22:39:39 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/05 00:40:50 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_state(char *str, t_philo *philo)
 		pthread_mutex_lock(&philo->data->print_mtx);
 		printf("%ld %d %s\n", now(), philo->id, str);
 		pthread_mutex_unlock(&philo->data->print_mtx);
-	}	
+	}
 	pthread_mutex_unlock(&philo->data->over_mtx);
 }
 

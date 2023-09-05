@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/04 21:54:01 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/05 00:42:56 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,5 @@ void	controller(t_data *data, t_philo **philos)
 	}
 	pthread_mutex_unlock(&data->over_mtx);
 	philos_destroy(data, philos, data->nbr_philos);
-	mutexes_destroy(data, philos, data->nbr_philos);
+	//mutexes_destroy(data, philos, data->nbr_philos);
 }

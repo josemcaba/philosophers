@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:04:22 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/04 22:40:46 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/05 00:43:24 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	philos_create(t_data *data, t_philo **philos)
 									philo_th, &(*philos)[i]))
 			{
 				philos_destroy(data, philos, i);
-				mutexes_destroy(data, philos, data->nbr_philos);
+				//mutexes_destroy(data, philos, data->nbr_philos);
 				free(*philos);
 				return (error("Can not create thread for a philosopher\n"));
 			}
