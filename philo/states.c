@@ -6,28 +6,20 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/05 22:25:15 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/05 23:52:46 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/* 
-The 10 microseconds are to ensure that, in case dinner is over, 
-nothing is printed and that the philosophers do not move on to
-the next state.
-*/
 void	print_state(char *str, t_philo *philo)
 {
-	usleep(10);
+	pthread_mutex_lock(&philo->data->print_mtx);
 	pthread_mutex_lock(&philo->data->over_mtx);
 	if (!philo->data->over)
-	{
-		pthread_mutex_lock(&philo->data->print_mtx);
 		printf("%ld %d %s\n", now(philo->data), philo->id, str);
-		pthread_mutex_unlock(&philo->data->print_mtx);
-	}
 	pthread_mutex_unlock(&philo->data->over_mtx);
+	pthread_mutex_unlock(&philo->data->print_mtx);
 }
 
 void	thinking(t_philo *philo)

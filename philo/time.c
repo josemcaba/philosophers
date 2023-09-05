@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:30:21 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/05 22:24:38 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/05 23:52:10 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ int	random_0_9(int min, int max)
 long	now(t_data *data)
 {
 	struct timeval	tv;
+	long			now;
 
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec * 0.001) - data->start_time);
+	now = (tv.tv_sec * 1000) + (tv.tv_usec * 0.001);
+	return (now - data->start_time);
 }
 
 /*
@@ -47,7 +49,7 @@ void	ft_wait(long msec, t_data *data)
 	while ((now(data) - start_time < msec) && !data->over)
 	{
 		pthread_mutex_unlock(&data->over_mtx);
-		usleep(10);
+		//usleep(10);
 		pthread_mutex_lock(&data->over_mtx);
 	}
 	pthread_mutex_unlock(&data->over_mtx);
