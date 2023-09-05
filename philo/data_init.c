@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 16:29:07 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/05 22:14:53 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	data_init(t_data *data, int argc, char *argv[])
 	data->time_die = ft_atoi(argv[2]);
 	data->time_eat = ft_atoi(argv[3]);
 	data->time_sleep = ft_atoi(argv[4]);
+	data->start_time = 0;
 	data->min_meals = -1;
 	if (argc == 6)
 		data->min_meals = ft_atoi(argv[5]);

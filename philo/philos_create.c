@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:04:22 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/05 00:43:24 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/05 22:41:13 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	philos_create(t_data *data, t_philo **philos)
 {
 	int	i;
 
+	data->start_time = now(data);
 	if (data->nbr_philos == 1)
 	{
 		print_state("is thinking", philos[0]);
@@ -45,7 +46,7 @@ int	philos_create(t_data *data, t_philo **philos)
 		i = -1;
 		while (++i < data->nbr_philos)
 		{
-			(*philos)[i].black_hole = now() + data->time_die;
+			(*philos)[i].black_hole = now(data) + data->time_die;
 			if (pthread_create(&(*philos)[i].th_id, NULL, \
 									philo_th, &(*philos)[i]))
 			{

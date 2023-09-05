@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/05 00:40:50 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/05 22:25:15 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	print_state(char *str, t_philo *philo)
 	if (!philo->data->over)
 	{
 		pthread_mutex_lock(&philo->data->print_mtx);
-		printf("%ld %d %s\n", now(), philo->id, str);
+		printf("%ld %d %s\n", now(philo->data), philo->id, str);
 		pthread_mutex_unlock(&philo->data->print_mtx);
 	}
 	pthread_mutex_unlock(&philo->data->over_mtx);
@@ -53,7 +53,7 @@ void	eating(t_philo *philo)
 {
 	print_state("is eating", philo);
 	pthread_mutex_lock(&philo->black_hole_mtx);
-	philo->black_hole = now() + philo->data->time_die;
+	philo->black_hole = now(philo->data) + philo->data->time_die;
 	pthread_mutex_unlock(&philo->black_hole_mtx);
 	ft_wait(philo->data->time_eat, philo->data);
 	if (philo->data->min_meals > 0)
