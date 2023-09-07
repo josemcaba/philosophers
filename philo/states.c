@@ -25,6 +25,7 @@ void	print_state(char *str, t_philo *philo)
 void	thinking(t_philo *philo)
 {
 	print_state("is thinking", philo);
+	ft_wait(philo->min_think, philo->data);
 	if (philo->id % 2)
 	{
 		pthread_mutex_lock(&philo->right_fork);
@@ -65,4 +66,6 @@ void	sleeping(t_philo *philo)
 {
 	print_state("is sleeping", philo);
 	ft_wait(philo->data->time_sleep, philo->data);
+	philo->min_think = (philo->black_hole - philo->data->time_eat - \
+						philo->data->time_sleep) * 0.1;
 }

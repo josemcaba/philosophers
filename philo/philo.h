@@ -39,6 +39,7 @@ typedef struct s_philo
 	t_data				*data;
 	int					id;
 	int					nbr_meals;
+	long				min_think;
 	long				black_hole;
 	pthread_mutex_t		black_hole_mtx;
 	pthread_mutex_t		right_fork;

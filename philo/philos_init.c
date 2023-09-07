@@ -36,6 +36,7 @@ int	philos_init(t_data *data, t_philo **philos)
 		(*philos)[i].data = data;
 		(*philos)[i].id = i + 1;
 		(*philos)[i].nbr_meals = 0;
+		(*philos)[i].min_think = 0;
 		if (philos_mutex_init(&(*philos)[i]))
 		{
 			free(*philos);

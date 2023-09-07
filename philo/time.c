@@ -37,7 +37,7 @@ long	now(t_data *data)
 }
 
 /*
-The 10 microseconds allows the "over_mutex" to be freed long enough for
+The 5 microseconds allow the "over_mutex" to be freed long enough for
 all threads to use it.
 */
 void	ft_wait(long msec, t_data *data)
@@ -49,7 +49,7 @@ void	ft_wait(long msec, t_data *data)
 	while ((now(data) - start_time < msec) && !data->over)
 	{
 		pthread_mutex_unlock(&data->over_mtx);
-		//usleep(10);
+		usleep(5);
 		pthread_mutex_lock(&data->over_mtx);
 	}
 	pthread_mutex_unlock(&data->over_mtx);
