@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/05 22:16:22 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:59:57 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_philo
 	t_data				*data;
 	int					id;
 	int					nbr_meals;
-	long				min_think;
+	long				now;
 	long				black_hole;
 	pthread_mutex_t		black_hole_mtx;
 	pthread_mutex_t		right_fork;
@@ -53,7 +53,7 @@ int		philos_create(t_data *data, t_philo **philos);
 void	controller(t_data *data, t_philo **philo);
 void	mutexes_destroy(t_data *data, t_philo **philos, int nbr);
 void	philos_destroy(t_data *data, t_philo **philos, int nbr);
-long	now(t_data *data);
+long	now(void);
 void	ft_wait(long msec, t_data *data);
 int		random_0_9(int min, int max);
 void	print_state(char *str, t_philo *philo);
