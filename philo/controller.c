@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/07 16:27:41 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:28:34 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ static void	check_dead(t_data *data, t_philo **philos)
 		if (now() > (*philos)[i].black_hole)
 		{
 			pthread_mutex_lock(&data->over_mtx);
-			printf("%ld %d %s\n", now() - data->start_time, (*philos)[i].id, "died");
+			if (!data->over)
+				printf("%ld %d %s\n", now() - data->start_time, (*philos)[i].id, "died");
 			data->over = 1;
 			pthread_mutex_unlock(&data->over_mtx);
 		}
