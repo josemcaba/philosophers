@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 12:57:16 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/08 23:28:48 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ static void	check_dead(t_data *data, t_philo **philos)
 
 void	controller(t_data *data, t_philo **philos)
 {
-	if (data->nbr_philos == 1)
-		return ;
 	pthread_mutex_lock(&data->over_mtx);
 	while (!data->over)
 	{
@@ -62,5 +60,7 @@ void	controller(t_data *data, t_philo **philos)
 		pthread_mutex_lock(&data->over_mtx);
 	}
 	pthread_mutex_unlock(&data->over_mtx);
+	pthread_mutex_unlock(&data->dummy_fork);
 	philos_destroy(data, philos, data->nbr_philos);
+	free(*philos);
 }

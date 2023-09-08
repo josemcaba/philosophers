@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:23:19 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 14:46:19 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/08 23:27:07 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,5 @@ int	main(int argc, char *argv[])
 	if (philos_create(&data, &philos))
 		return (EXIT_FAILURE);
 	controller(&data, &philos);
-	free(philos);
 	return (EXIT_SUCCESS);
 }

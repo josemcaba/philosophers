@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philos_create.c                                    :+:      :+:    :+:   */
+/*   philos_create_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:04:22 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 12:57:42 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/08 21:40:40 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 static void	*philo_th(void *arg)
 {

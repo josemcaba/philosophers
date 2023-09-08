@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 12:58:08 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/08 22:42:43 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ static int	philos_mutex_init(t_philo *philo)
 		return (error("Can not init black_hole mutex\n"));
 	if (pthread_mutex_init(&(*philo).right_fork, NULL))
 		return (error("Can not init right_fork mutex\n"));
+	if (pthread_mutex_init(&(*philo).data->dummy_fork, NULL))
+		return (error("Can not init dummy_fork mutex\n"));
+	pthread_mutex_lock(&(*philo).data->dummy_fork);
 	return (EXIT_SUCCESS);
 }
 
@@ -42,6 +45,9 @@ int	philos_init(t_data *data, t_philo **philos)
 		if (i > 0)
 			(*philos)[i].left_fork = &(*philos)[i - 1].right_fork;
 	}
-	(*philos)[0].left_fork = &(*philos)[data->nbr_philos - 1].right_fork;
+	if (data->nbr_philos == 1)
+		(*philos)[0].left_fork = &data->dummy_fork;
+	else
+		(*philos)[0].left_fork = &(*philos)[data->nbr_philos - 1].right_fork;
 	return (EXIT_SUCCESS);
 }

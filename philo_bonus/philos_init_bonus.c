@@ -1,25 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philos_init.c                                      :+:      :+:    :+:   */
+/*   philos_init_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 12:58:08 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/08 21:38:59 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-static int	philos_mutex_init(t_philo *philo)
-{
-	if (pthread_mutex_init(&(*philo).black_hole_mtx, NULL))
-		return (error("Can not init black_hole mutex\n"));
-	if (pthread_mutex_init(&(*philo).right_fork, NULL))
-		return (error("Can not init right_fork mutex\n"));
-	return (EXIT_SUCCESS);
-}
+#include "philo_bonus.h"
 
 int	philos_init(t_data *data, t_philo **philos)
 {
@@ -34,14 +25,6 @@ int	philos_init(t_data *data, t_philo **philos)
 		(*philos)[i].data = data;
 		(*philos)[i].id = i + 1;
 		(*philos)[i].nbr_meals = 0;
-		if (philos_mutex_init(&(*philos)[i]))
-		{
-			free(*philos);
-			return (EXIT_FAILURE);
-		}
-		if (i > 0)
-			(*philos)[i].left_fork = &(*philos)[i - 1].right_fork;
 	}
-	(*philos)[0].left_fork = &(*philos)[data->nbr_philos - 1].right_fork;
 	return (EXIT_SUCCESS);
 }
