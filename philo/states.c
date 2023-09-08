@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/07 16:31:15 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/08 12:58:37 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	print_state(char *str, t_philo *philo)
 	philo->now = now();
 	pthread_mutex_lock(&philo->data->over_mtx);
 	if (!philo->data->over)
-		printf("%ld %d %s\n", philo->now - philo->data->start_time, philo->id, str);
+		printf("%ld %d %s\n", philo->now - philo->data->start_time, \
+				philo->id, str);
 	pthread_mutex_unlock(&philo->data->over_mtx);
 	pthread_mutex_unlock(&philo->data->print_mtx);
 }
