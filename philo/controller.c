@@ -6,11 +6,34 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 23:28:48 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/09 20:24:29 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	philos_destroy(t_data *data, t_philo **philos, int nbr)
+{
+	int	i;
+
+	pthread_mutex_lock(&data->over_mtx);
+	data->over = 1;
+	pthread_mutex_unlock(&data->over_mtx);
+	pthread_mutex_unlock(&data->dummy_fork);
+	i = -1;
+	while (++i < nbr)
+		pthread_join((*philos)[i].th_id, NULL);
+	i = -1;
+	while (++i < nbr)
+	{
+		pthread_mutex_destroy(&(*philos)[i].black_hole_mtx);
+		pthread_mutex_destroy(&(*philos)[i].right_fork);
+	}
+	pthread_mutex_destroy(&data->full_philos_mtx);
+	pthread_mutex_destroy(&data->over_mtx);
+	pthread_mutex_destroy(&data->print_mtx);
+	pthread_mutex_destroy(&data->dummy_fork);
+}
 
 static void	check_full(t_data *data)
 {
@@ -60,7 +83,6 @@ void	controller(t_data *data, t_philo **philos)
 		pthread_mutex_lock(&data->over_mtx);
 	}
 	pthread_mutex_unlock(&data->over_mtx);
-	pthread_mutex_unlock(&data->dummy_fork);
 	philos_destroy(data, philos, data->nbr_philos);
 	free(*philos);
 }

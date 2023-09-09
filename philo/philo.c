@@ -6,25 +6,11 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 23:23:19 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 23:27:07 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/09 19:29:23 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-/*
-Despues de pthread_create hay que asegurarse de liberar los recursos usados
-por el propio sistema y para ello, el thread debe haber finalizado.
-
-Si usamos pthread_join para esperar a que termine, la propia pthred_join
-libera la memoria.
- 
-Si finaliza el thread de otra forma que no sea usando pthread_join entonces
-debemos liberarlos expresamente con pthread_detach.
-
-Si el programa finaliza antes de que finalice el thread, los recursos no
-seran liberados. Produciendo leaks.
-*/
 
 int	main(int argc, char *argv[])
 {

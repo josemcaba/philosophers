@@ -6,25 +6,41 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 21:38:59 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/09 18:13:04 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	philos_init(t_data *data, t_philo **philos)
+void	philo_create(t_data *data, t_philo *philo)
 {
-	int	i;
+	data->start_time = now();
+	philo->black_hole = now() + data->time_die;
+	while (!philo->data->over)
+	{
+		thinking(philo);
+		eating(philo);
+		sleeping(philo);
+	}
+}
 
-	*philos = malloc(data->nbr_philos * sizeof(t_philo));
-	if (!(*philos))
-		return (error("Can not allocate memory for philosophers\n"));
+int	philos_init(t_data *data, t_philo *philo)
+{
+	int		i;
+	pid_t	pid;
+
 	i = -1;
 	while (++i < data->nbr_philos)
 	{
-		(*philos)[i].data = data;
-		(*philos)[i].id = i + 1;
-		(*philos)[i].nbr_meals = 0;
+		philo->data = data;
+		philo->id = i + 1;
+		philo->nbr_meals = 0;
+		pid = fork();
+		if (pid == 0)
+		{
+			philo_create(data, philo);
+			exit(0);
+		}
 	}
 	return (EXIT_SUCCESS);
 }

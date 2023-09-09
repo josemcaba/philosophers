@@ -6,13 +6,13 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 11:53:52 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/03 11:55:58 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/09 19:19:50 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	error(char *str)
+int	ft_error(char *str)
 {
 	int	i;
 

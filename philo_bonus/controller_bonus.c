@@ -6,11 +6,11 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 12:57:16 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/09 18:05:36 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 static void	check_full(t_data *data)
 {
@@ -50,8 +50,6 @@ static void	check_dead(t_data *data, t_philo **philos)
 
 void	controller(t_data *data, t_philo **philos)
 {
-	if (data->nbr_philos == 1)
-		return ;
 	pthread_mutex_lock(&data->over_mtx);
 	while (!data->over)
 	{

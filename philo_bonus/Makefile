@@ -6,7 +6,7 @@
 #    By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 14:56:28 by jocaball          #+#    #+#              #
-#    Updated: 2023/09/05 22:44:59 by jocaball         ###   ########.fr        #
+#    Updated: 2023/09/09 18:42:33 by jocaball         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,9 @@ NAME = philo
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 
-HDR = philo.h
-SRC = philo.c data_init.c philos_init.c philos_create.c states.c controller.c \
-	  time.c error.c destroyers.c
+HDR = philo_bonus.h
+SRC = philo_bonus.c data_init_bonus.c philos_init_bonus.c time_bonus.c \
+		states_bonus.c ft_error_bonus.c
 OBJ = $(SRC:%.c=%.o)
 
 $(NAME) : $(SRC) $(HDR)

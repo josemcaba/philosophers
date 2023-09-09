@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   states.c                                           :+:      :+:    :+:   */
+/*   states_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 12:58:37 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/09 18:19:41 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	print_state(char *str, t_philo *philo)
 {
@@ -29,16 +29,12 @@ void	thinking(t_philo *philo)
 	print_state("is thinking", philo);
 	if (philo->id % 2)
 	{
-		pthread_mutex_lock(&philo->right_fork);
 		print_state("has taken a fork", philo);
-		pthread_mutex_lock(philo->left_fork);
 		print_state("has taken a fork", philo);
 	}
 	else
 	{
-		pthread_mutex_lock(philo->left_fork);
 		print_state("has taken a fork", philo);
-		pthread_mutex_lock(&philo->right_fork);
 		print_state("has taken a fork", philo);
 	}
 }
@@ -59,8 +55,6 @@ void	eating(t_philo *philo)
 			pthread_mutex_unlock(&philo->data->full_philos_mtx);
 		}
 	}
-	pthread_mutex_unlock(&philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
 }
 
 void	sleeping(t_philo *philo)

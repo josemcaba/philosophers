@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/25 23:23:19 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/08 13:38:02 by jocaball         ###   ########.fr       */
+/*   Created: 2023/09/09 11:54:53 by jocaball          #+#    #+#             */
+/*   Updated: 2023/09/09 18:37:23 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,34 @@
 
 int	main(int argc, char *argv[])
 {
-	t_data			data;
-	t_philo			*philos;
+	t_data	data;
+	t_philo	philos;
+	
+	pid_t	pid;
+	int		status;
 
+	printf("Soy el Controller ");
 	if (data_init(&data, argc, argv))
 		return (EXIT_FAILURE);
+	
 	if (philos_init(&data, &philos))
 		return (EXIT_FAILURE);
-	if (philos_create(&data, &philos))
-		return (EXIT_FAILURE);
-	controller(&data, &philos);
-	free(philos);
-	return (EXIT_SUCCESS);
+		
+	pid = fork();
+	if (pid == 0)
+	{
+		printf("\nSoy el hijo ...\n");
+		usleep(3000000);
+		printf("... y he terminado\n");
+		exit(0);
+	}
+//	else
+//	{
+		printf("Mi hijo es el %d\n", pid);
+		printf("Estoy esperando a que mi hijo termine ...\n");
+		waitpid(pid, &status, 0);
+		printf("\nMi hijo ha terminado\n");
+//	}
+	
+	return (0);
 }
