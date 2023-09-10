@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/09 19:23:21 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/10 14:40:25 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,34 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <semaphore.h>
 
 typedef struct s_data
 {
-	int				nbr_philos;
-	int				time_die;
-	int				time_eat;
-	int				time_sleep;
-	int				min_meals;
-	long			start_time;
-	int				full_philos;
-	pthread_mutex_t	full_philos_mtx;
-	int				over;
-	pthread_mutex_t	over_mtx;
-	pthread_mutex_t	print_mtx;
-	pthread_mutex_t	dummy_fork;
+	int		nbr_philos;
+	int		time_die;
+	int		time_eat;
+	int		time_sleep;
+	int		min_meals;
+	long	start_time;
+	sem_t	*forks_sem;
+	int		full_philos;
+	sem_t	*full_sem;
+	int		over;
+	sem_t	*over_sem;
+	sem_t	*print_sem;
 }	t_data;
 
 typedef struct s_philo
 {
-	t_data				*data;
-	int					id;
-	int					nbr_meals;
-	long				now;
-	long				black_hole;
-	pthread_mutex_t		black_hole_mtx;
-	pthread_mutex_t		right_fork;
-	pthread_mutex_t		*left_fork;
-	pthread_t			th_id;
+	t_data	*data;
+	int		id;
+	int		nbr_meals;
+	long	now;
+	long	black_hole;
+	sem_t	*black_hole_sem;
 }	t_philo;
 
 int		data_init(t_data *data, int argc, char *argv[]);

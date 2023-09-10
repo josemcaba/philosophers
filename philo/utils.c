@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:30:21 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/10 11:33:08 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/10 12:34:25 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ long	now(void)
 }
 
 /*
-The 10 microseconds allow the "over_mutex" to be freed long enough for
+The 50 microseconds allow the "over_mutex" to be freed long enough for
 all threads to use it.
 */
 void	ft_wait(long msec, t_data *data)
@@ -35,7 +35,7 @@ void	ft_wait(long msec, t_data *data)
 	while ((now() - start_time < msec) && !data->over)
 	{
 		pthread_mutex_unlock(&data->over_mtx);
-		usleep(10);
+		usleep(50);
 		pthread_mutex_lock(&data->over_mtx);
 	}
 	pthread_mutex_unlock(&data->over_mtx);

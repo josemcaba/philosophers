@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   data_init_bonus.c                                  :+:      :+:    :+:   */
+/*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/09 18:44:18 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/10 14:36:22 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philo.h"
 
-// static int	data_mutex_init(t_data *data)
-// {
-// 	if (pthread_mutex_init(&data->full_philos_mtx, NULL))
-// 		return (ft_error("Can not init mutex for full_philos\n"));
-// 	if (pthread_mutex_init(&data->over_mtx, NULL))
-// 		return (ft_error("Can not init mutex for over\n"));
-// 	if (pthread_mutex_init(&data->print_mtx, NULL))
-// 		return (ft_error("Can not init mutex for print_status\n"));
-// 	return (EXIT_SUCCESS);
-// }
+static int	data_sem_open(t_data *data)
+{
+	sem_unlink("/forks");
+	data->forks_sem = sem_open("/forks", O_CREAT | O_EXCL, 400, \
+								data->nbr_philos);
+	if (data->forks_sem == SEM_FAILED)
+		return (ft_error("Can not open /forks semaphore\n"));
+	sem_unlink("/full");
+	data->full_sem = sem_open("/full", O_CREAT | O_EXCL, 600, \
+								data->min_meals);
+	if (data->full_sem == SEM_FAILED)
+		return (ft_error("Can not open /full semaphore\n"));
+	sem_unlink("/over");
+	data->over_sem = sem_open("/over", O_CREAT | O_EXCL, 600, 1);
+	if (data->over_sem == SEM_FAILED)
+		return (ft_error("Can not open /over semaphore\n"));
+	sem_unlink("/print");
+	data->print_sem = sem_open("/print", O_CREAT | O_EXCL, 600, 1);
+	if (data->print_sem == SEM_FAILED)
+		return (ft_error("Can not open /print semaphore\n"));
+	return (EXIT_SUCCESS);
+}
 
 static int	ft_atoi(const char *str)
 {
@@ -45,7 +57,6 @@ static int	args_parse(int argc, char *argv[])
 	int	i;
 	int	j;
 
-	printf("esperando a mi hijo %d \n", argc);
 	if ((argc != 5) && (argc != 6))
 		return (ft_error("Wrong number of parameters\n"));
 	i = 0;
@@ -81,7 +92,7 @@ int	data_init(t_data *data, int argc, char *argv[])
 		return (EXIT_FAILURE);
 	data->full_philos = 0;
 	data->over = 0;
-	// if (data_mutex_init(data))
-	// 	return (EXIT_FAILURE);
+	if (data_sem_open(data))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
