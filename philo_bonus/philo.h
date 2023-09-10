@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/10 14:40:25 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/10 17:35:24 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_data
 	int		time_sleep;
 	int		min_meals;
 	long	start_time;
+	pid_t	*pid_philo;
 	sem_t	*forks_sem;
 	int		full_philos;
 	sem_t	*full_sem;
@@ -43,13 +44,12 @@ typedef struct s_philo
 	t_data	*data;
 	int		id;
 	int		nbr_meals;
-	long	now;
 	long	black_hole;
 	sem_t	*black_hole_sem;
 }	t_philo;
 
 int		data_init(t_data *data, int argc, char *argv[]);
-int		philos_init(t_data *data, t_philo **philo);
+int		philos_init(t_data *data);
 int		philos_create(t_data *data, t_philo **philos);
 void	controller(t_data *data, t_philo **philo);
 void	mutexes_destroy(t_data *data, t_philo **philos, int nbr);

@@ -6,7 +6,7 @@
 #    By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 14:56:28 by jocaball          #+#    #+#              #
-#    Updated: 2023/09/10 14:50:43 by jocaball         ###   ########.fr        #
+#    Updated: 2023/09/10 23:54:22 by jocaball         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -pthread
 
 HDR = philo.h
-SRC = philo.c utils.c data_init.c philos_init.c # philos_create.c states.c controller.c
+SRC = philo.c utils.c data_init.c philos_init.c states.c  # controller.c
 OBJ = $(SRC:%.c=%.o)
 
 $(NAME) : $(SRC) $(HDR)

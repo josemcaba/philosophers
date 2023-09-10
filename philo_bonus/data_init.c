@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 14:48:05 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/10 14:36:22 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/11 00:26:49 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,22 @@ static int	data_sem_open(t_data *data)
 								data->nbr_philos);
 	if (data->forks_sem == SEM_FAILED)
 		return (ft_error("Can not open /forks semaphore\n"));
-	sem_unlink("/full");
-	data->full_sem = sem_open("/full", O_CREAT | O_EXCL, 600, \
-								data->min_meals);
-	if (data->full_sem == SEM_FAILED)
-		return (ft_error("Can not open /full semaphore\n"));
 	sem_unlink("/over");
-	data->over_sem = sem_open("/over", O_CREAT | O_EXCL, 600, 1);
+	data->over_sem = sem_open("/over", O_CREAT | O_EXCL, 400, 1);
 	if (data->over_sem == SEM_FAILED)
 		return (ft_error("Can not open /over semaphore\n"));
 	sem_unlink("/print");
-	data->print_sem = sem_open("/print", O_CREAT | O_EXCL, 600, 1);
+	data->print_sem = sem_open("/print", O_CREAT | O_EXCL, 400, 1);
 	if (data->print_sem == SEM_FAILED)
 		return (ft_error("Can not open /print semaphore\n"));
+    if (data->min_meals > 0)
+	{		
+		sem_unlink("/full");
+		data->full_sem = sem_open("/full", O_CREAT | O_EXCL, 400, \
+									data->min_meals);
+		if (data->full_sem == SEM_FAILED)
+			return (ft_error("Can not open /full semaphore\n"));
+	}
 	return (EXIT_SUCCESS);
 }
 
