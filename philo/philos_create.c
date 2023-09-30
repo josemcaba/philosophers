@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 12:04:22 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/10 15:37:38 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/30 22:51:38 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	philos_create(t_data *data, t_philo **philos)
 	i = -1;
 	while (++i < data->nbr_philos)
 	{
-		(*philos)[i].black_hole = now() + data->time_die;
+		(*philos)[i].black_hole = now() + data->time_to_die;
 		if (pthread_create(&(*philos)[i].th_id, NULL, \
-								philo_th, &(*philos)[i]))
+								philo_th, &(*philos)[i]) != 0)
 		{
 			philos_destroy(data, philos, i);
 			return (ft_error("Can not create thread for a philosopher\n"));

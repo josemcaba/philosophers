@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/09 19:23:21 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/30 21:25:23 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@
 typedef struct s_data
 {
 	int				nbr_philos;
-	int				time_die;
-	int				time_eat;
-	int				time_sleep;
-	int				min_meals;
-	long			start_time;
-	int				full_philos;
-	pthread_mutex_t	full_philos_mtx;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				min_nbr_meals;
+	int				nbr_full_philos;
+	pthread_mutex_t	nbr_full_philos_mtx;
 	int				over;
 	pthread_mutex_t	over_mtx;
 	pthread_mutex_t	print_mtx;
 	pthread_mutex_t	dummy_fork;
+	long			start_time;
 }	t_data;
 
 typedef struct s_philo

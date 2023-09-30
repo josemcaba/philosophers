@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/10 11:36:12 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/30 22:15:17 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_state(char *str, t_philo *philo)
 	philo->now = now();
 	pthread_mutex_lock(&philo->data->over_mtx);
 	if (!philo->data->over)
-		printf("%ld %d %s\n", philo->now - philo->data->start_time, \
+		printf("%06ld %d %s\n", philo->now - philo->data->start_time, \
 				philo->id, str);
 	pthread_mutex_unlock(&philo->data->over_mtx);
 	pthread_mutex_unlock(&philo->data->print_mtx);
@@ -37,7 +37,7 @@ void	thinking(t_philo *philo)
 	else
 	{
 		if (philo->nbr_meals == 0)
-			ft_wait(philo->data->time_eat % 10 + 1, philo->data);
+			ft_wait(philo->data->time_to_eat % 10 + 1, philo->data);
 		pthread_mutex_lock(philo->left_fork);
 		print_state("has taken a fork", philo);
 		pthread_mutex_lock(&philo->right_fork);
@@ -49,16 +49,16 @@ void	eating(t_philo *philo)
 {
 	print_state("is eating", philo);
 	pthread_mutex_lock(&philo->black_hole_mtx);
-	philo->black_hole = philo->now + philo->data->time_die;
+	philo->black_hole = philo->now + philo->data->time_to_die;
 	pthread_mutex_unlock(&philo->black_hole_mtx);
-	ft_wait(philo->data->time_eat, philo->data);
-	if (philo->data->min_meals > 0)
+	ft_wait(philo->data->time_to_eat, philo->data);
+	if (philo->data->min_nbr_meals > 0)
 	{
-		if (++philo->nbr_meals == philo->data->min_meals)
+		if (++philo->nbr_meals == philo->data->min_nbr_meals)
 		{
-			pthread_mutex_lock(&philo->data->full_philos_mtx);
-			philo->data->full_philos++;
-			pthread_mutex_unlock(&philo->data->full_philos_mtx);
+			pthread_mutex_lock(&philo->data->nbr_full_philos_mtx);
+			philo->data->nbr_full_philos++;
+			pthread_mutex_unlock(&philo->data->nbr_full_philos_mtx);
 		}
 	}
 	pthread_mutex_unlock(&philo->right_fork);
@@ -68,5 +68,5 @@ void	eating(t_philo *philo)
 void	sleeping(t_philo *philo)
 {
 	print_state("is sleeping", philo);
-	ft_wait(philo->data->time_sleep, philo->data);
+	ft_wait(philo->data->time_to_sleep, philo->data);
 }

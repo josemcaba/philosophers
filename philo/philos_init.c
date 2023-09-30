@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 00:17:54 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/10 15:35:07 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/09/30 22:50:23 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	philos_init(t_data *data, t_philo **philos)
 		(*philos)[i].data = data;
 		(*philos)[i].id = i + 1;
 		(*philos)[i].nbr_meals = 0;
-		if (philos_mutex_init(&(*philos)[i]))
+		if (philos_mutex_init(&(*philos)[i]) == EXIT_FAILURE)
 		{
 			pthread_mutex_unlock(&data->dummy_fork);
 			mutexes_destroy(data, philos, i);
