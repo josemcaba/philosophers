@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 00:35:48 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/30 21:25:23 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/10/01 01:26:55 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int		data_init(t_data *data, int argc, char *argv[]);
 int		philos_init(t_data *data, t_philo **philo);
 int		philos_create(t_data *data, t_philo **philos);
 void	controller(t_data *data, t_philo **philo);
-void	mutexes_destroy(t_data *data, t_philo **philos, int nbr);
 void	philos_destroy(t_data *data, t_philo **philos, int nbr);
 long	now(void);
 void	ft_wait(long msec, t_data *data);

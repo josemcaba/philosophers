@@ -6,28 +6,11 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 13:55:34 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/30 22:47:36 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/10/01 01:19:35 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	mutexes_destroy(t_data *data, t_philo **philos, int nbr)
-{
-	int	i;
-
-	i = -1;
-	while (++i < nbr)
-	{
-		pthread_mutex_destroy(&(*philos)[i].black_hole_mtx);
-		pthread_mutex_destroy(&(*philos)[i].right_fork);
-	}
-	pthread_mutex_destroy(&data->nbr_full_philos_mtx);
-	pthread_mutex_destroy(&data->over_mtx);
-	pthread_mutex_destroy(&data->print_mtx);
-	pthread_mutex_destroy(&data->dummy_fork);
-	free(*philos);
-}
 
 void	philos_destroy(t_data *data, t_philo **philos, int nbr)
 {
@@ -40,7 +23,7 @@ void	philos_destroy(t_data *data, t_philo **philos, int nbr)
 	i = -1;
 	while (++i < nbr)
 		pthread_join((*philos)[i].th_id, NULL);
-	mutexes_destroy(data, philos, data->nbr_philos);
+	free(*philos);
 }
 
 static int	check_full(t_data *data)
