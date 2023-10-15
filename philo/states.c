@@ -6,7 +6,7 @@
 /*   By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 09:42:01 by jocaball          #+#    #+#             */
-/*   Updated: 2023/09/30 22:15:17 by jocaball         ###   ########.fr       */
+/*   Updated: 2023/10/15 13:02:55 by jocaball         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	print_state(char *str, t_philo *philo)
 void	thinking(t_philo *philo)
 {
 	print_state("is thinking", philo);
+	ft_wait(philo->data->time_to_eat * 0.01, philo->data);
 	if (philo->id % 2)
 	{
 		pthread_mutex_lock(&philo->right_fork);
@@ -36,8 +37,6 @@ void	thinking(t_philo *philo)
 	}
 	else
 	{
-		if (philo->nbr_meals == 0)
-			ft_wait(philo->data->time_to_eat % 10 + 1, philo->data);
 		pthread_mutex_lock(philo->left_fork);
 		print_state("has taken a fork", philo);
 		pthread_mutex_lock(&philo->right_fork);
