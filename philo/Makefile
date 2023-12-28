@@ -6,7 +6,7 @@
 #    By: jocaball <jocaball@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 14:56:28 by jocaball          #+#    #+#              #
-#    Updated: 2023/10/09 19:59:37 by jocaball         ###   ########.fr        #
+#    Updated: 2023/12/28 19:39:55 by jocaball         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,4 +45,4 @@ test2 : fclean
 	$(CC) $(CFLAGS) $(SRC) -o $(NAME) -g -fsanitize=thread
 	./philo 6 220 100 100 3
 
-phony : all clean fclean re $(NAME)
+.PHONY : all clean fclean re $(NAME)
