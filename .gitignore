@@ -7,3 +7,6 @@ philo/philo.dSYM/Contents/Info.plist
 philo/philo.exe
 philo_bonus/philo
 philo_bonus/a.out
+philo_bonus/.DS_Store
+philo/.DS_Store
+.DS_Store
